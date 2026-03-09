@@ -24,25 +24,26 @@
     background: radial-gradient(50% 50% at 50% 50%, rgba(0, 209, 255, 0.15) 0%, rgba(255, 255, 255, 0) 100%);
   }
 
-  .animate-gradient-text {
+  .animate-liquid-light {
     background: linear-gradient(
       to right,
-      #0055FF,
-      #BD00FF,
-      #00D1FF,
-      #0055FF
+      #4facfe 0%,
+      #00f2fe 25%,
+      #7000ff 50%,
+      #4facfe 75%,
+      #00f2fe 100%
     );
-    background-size: 300% auto;
+    background-size: 200% auto;
     background-clip: text;
     -webkit-background-clip: text;
-    text-transparent: true;
     color: transparent;
-    animation: gradient-flow 6s linear infinite;
+    animation: liquid-flow 8s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
   }
 
-  @keyframes gradient-flow {
+  @keyframes liquid-flow {
     0% { background-position: 0% center; }
-    100% { background-position: 300% center; }
+    50% { background-position: 100% center; }
+    100% { background-position: 0% center; }
   }
 
   /* Smooth blending for section transitions */
