@@ -1,5 +1,5 @@
 import Navbar from "../app/components/layout/Navbar";
-import Hero from "../app/components/sections/Hero";
+import Hero from "./components/sections/HeroSection";
 import Footer from "./components/layout/Footer";
 import CTA from "./components/sections/CTA";
 import HowItWorks from "./components/sections/HowItWorks";

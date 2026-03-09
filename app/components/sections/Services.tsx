@@ -1,75 +1,115 @@
 "use client";
 
+import React from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
-import * as LucideIcons from "lucide-react";
-import { cn } from "../../lib/utils";
+import { ArrowRightCircle } from "lucide-react";
+import { ServiceCard } from "../ui/ServiceCard";
 
 const services = [
-  { title: "Web", techs: "React, Angular, NodeJS", icon: "Box", active: true },
-  { title: "Ecommerce", techs: "Magento, Shopify", icon: "Zap", active: false },
-  { title: "App", techs: "React Native, Flutter", icon: "Smartphone", active: false },
-  { title: "Software", techs: "Electron.js", icon: "Layers", active: false },
-  { title: "Interface Design", techs: "React, Angular, NodeJS", icon: "Layout", active: false },
-  { title: "Social Media", techs: "React, Angular, NodeJS", icon: "Share2", active: false },
+  {
+    title: "Web Development",
+    stack: "Next.js, React, Node.js",
+    description: "High-performance websites and platforms designed for credibility, speed, and conversion.",
+    icon: "Box",
+    gradient: "bg-gradient-to-br from-blue-500 to-blue-700",
+    isHighlighted: true,
+  },
+  {
+    title: "SaaS Product Development",
+    stack: "MVP, Dashboards, Scalable Platforms",
+    description: "We design and engineer SaaS products from early validation to production-grade systems.",
+    icon: "FlaskConical",
+    gradient: "bg-gradient-to-br from-indigo-500 to-indigo-700",
+  },
+  {
+    title: "Mobile App Development",
+    stack: "React Native, Flutter",
+    description: "Cross-platform mobile applications built for usability, speed, and long-term growth.",
+    icon: "Smartphone",
+    gradient: "bg-gradient-to-br from-violet-500 to-violet-700",
+  },
+  {
+    title: "Cloud & DevOps",
+    stack: "AWS, CI/CD, Infrastructure",
+    description: "Reliable cloud architecture and deployment pipelines that support modern scalable systems.",
+    icon: "Cloud",
+    gradient: "bg-gradient-to-br from-purple-500 to-purple-700",
+  },
+  {
+    title: "AI Solutions",
+    stack: "Automation, Integrations, AI Workflows",
+    description: "Practical AI implementations that streamline operations and unlock new business capabilities.",
+    icon: "Sparkles",
+    gradient: "bg-gradient-to-br from-pink-500 to-pink-700",
+  },
+  {
+    title: "Cybersecurity & Blockchain",
+    stack: "Security Audits, Secure Systems, Web3",
+    description: "Secure architectures and blockchain-enabled systems built with resilience and trust.",
+    icon: "ShieldCheck",
+    gradient: "bg-gradient-to-br from-teal-500 to-emerald-700",
+  },
 ];
 
 export default function Services() {
   return (
-    <section className="bg-white pt-48 pb-32 relative z-10">
-      <div className="container mx-auto px-6">
+    <section className="relative bg-[#F9FAFB] pt-48 pb-32 overflow-hidden">
+      {/* Subtle Hero Gradient Continuation */}
+      <div className="absolute top-0 left-0 w-full h-[500px] bg-gradient-to-b from-white to-transparent pointer-events-none" />
+
+      <div className="container max-w-[1200px] mx-auto px-6 relative z-10">
         
-        {/* Section Header */}
+        {/* HEADER */}
         <div className="text-center mb-24">
-          <h2 className="text-5xl md:text-6xl font-black text-slate-900 mb-6">
+          <motion.h2 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-4xl md:text-6xl font-[900] text-slate-900 mb-6 tracking-tight"
+          >
             Services & Technologies
-          </h2>
-          <p className="text-slate-400 max-w-lg mx-auto">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.
-          </p>
+          </motion.h2>
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="text-slate-500 max-w-xl mx-auto text-lg md:text-xl"
+          >
+            We design and engineer digital systems that help businesses launch faster, scale reliably, and operate securely.
+          </motion.p>
         </div>
 
-        {/* Services Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-x-12 gap-y-20">
-          {services.map((service, index) => {
-            const IconComponent = (LucideIcons as any)[service.icon];
-            
-            return (
-              <motion.div 
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                className={cn(
-                  "relative p-8 transition-all duration-500 rounded-[32px]",
-                  service.active ? "bg-white shadow-[0_40px_80px_rgba(0,0,0,0.06)] border-t-2 border-blue-500" : "bg-transparent"
-                )}
-              >
-                {/* Icon Circle */}
-                <div className={cn(
-                  "w-14 h-14 rounded-full flex items-center justify-center mb-8 shadow-lg",
-                  service.active ? "bg-blue-600 text-white" : "bg-indigo-500 text-white"
-                )}>
-                  <IconComponent size={24} />
-                </div>
-
-                <h3 className="text-2xl font-bold text-slate-900 mb-2">{service.title}</h3>
-                <p className="text-sm font-bold text-slate-400 mb-4">{service.techs}</p>
-                <p className="text-slate-500 leading-relaxed text-sm">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                </p>
-              </motion.div>
-            );
-          })}
+        {/* GRID */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
+          {services.map((service, index) => (
+            <ServiceCard 
+              key={service.title}
+              {...service}
+              index={index}
+              icon={service.icon as any}
+            />
+          ))}
         </div>
-        
-        {/* Footer Link */}
+
+        {/* BOTTOM LINK */}
         <div className="mt-20 flex justify-center">
-          <button className="flex items-center gap-3 font-bold text-slate-400 hover:text-slate-900 transition-all group">
+          <button className="flex items-center gap-3 text-slate-400 font-bold hover:text-slate-900 transition-all group tracking-wide">
             Our services 
-            <LucideIcons.ArrowRightCircle className="group-hover:translate-x-1 transition-transform" />
+            <ArrowRightCircle size={24} className="group-hover:translate-x-1 transition-transform" />
           </button>
         </div>
       </div>
+
+      {/* DECORATIVE CUBE (Bottom Right) */}
+      <motion.div 
+        animate={{ y: [0, -20, 0], rotate: [0, 10, 0] }}
+        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute bottom-[-5%] right-[-5%] w-64 h-64 opacity-60 md:opacity-100 pointer-events-none"
+      >
+        <Image src="/cuberight.png" alt="Decorative Element" width={300} height={300} className="object-contain" />
+      </motion.div>
     </section>
   );
 }
