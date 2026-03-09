@@ -1,5 +1,8 @@
 import Navbar from "../app/components/layout/Navbar";
 import Hero from "../app/components/sections/Hero";
+import Footer from "./components/layout/Footer";
+import CTA from "./components/sections/CTA";
+import HowItWorks from "./components/sections/HowItWorks";
 import Quote from "./components/sections/Quote";
 import Services from "./components/sections/Services";
 
@@ -10,8 +13,9 @@ export default function Home() {
       <Hero />
       <Services />
       <Quote />
-      {/* Future sections (Work, Services) go here */}
-      <div className="h-screen" /> {/* Spacer for scroll testing */}
+      <HowItWorks />
+      <CTA />
+      <Footer />
     </main>
   );
 }
