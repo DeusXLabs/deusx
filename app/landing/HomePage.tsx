@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { 
   ArrowUpRight, 
   ShieldCheck,
@@ -135,7 +135,9 @@ const SectionLabel = ({ text }: { text: string }) => (
 );
 
 export default function HomePage() {
-  const [hoveredCapability, setHoveredCapability] = useState<number | null>(null);
+   const [hoveredCapability, setHoveredCapability] = useState<number | null>(null);
+  const { scrollYProgress } = useScroll();
+  const opacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
 
   return (
     <main className="bg-white selection:bg-blue-600 selection:text-white antialiased">
@@ -242,66 +244,73 @@ export default function HomePage() {
       {/* ══════════════════════════════════════════════════════════════════════
           CAPABILITIES: THE THREE PILLARS (PRESERVED)
       ══════════════════════════════════════════════════════════════════════ */}
-      <section className="py-32 bg-slate-50 border-y border-slate-100">
-        <div className="container mx-auto max-w-7xl px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-20">
-            
-            {/* Left Side: Sticky Labels */}
-            <div className="lg:col-span-4 lg:sticky lg:top-32 h-fit">
-              <SectionLabel text="Core Capabilities" />
-              <h2 className="text-5xl font-medium text-slate-900 mb-8" style={{ fontFamily: "var(--font-dm-serif)" }}>
-                Engineered for <br />Confidence.
-              </h2>
-              <p className="text-xl text-slate-500 leading-relaxed mb-10">
-                Our services are clustered into three technical pillars designed to move the needle for growing systems.
-              </p>
-              <div className="space-y-4">
-                {capabilities.map((cap, idx) => (
-                    <div 
-                        key={idx}
-                        className={`text-xs uppercase tracking-[0.3em] font-bold transition-all duration-500 flex items-center gap-4 ${hoveredCapability === idx ? 'text-blue-600' : 'text-slate-300'}`}
-                    >
-                        <div className={`h-[1px] transition-all duration-500 ${hoveredCapability === idx ? 'w-8 bg-blue-600' : 'w-4 bg-slate-200'}`} />
-                        {cap.category}
-                    </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Right Side: Large Interactive Cards */}
-            <div className="lg:col-span-8 space-y-6">
-              {capabilities.map((cap, idx) => (
-                <motion.div
-                  key={idx}
-                  onMouseEnter={() => setHoveredCapability(idx)}
-                  onMouseLeave={() => setHoveredCapability(null)}
-                  className="group bg-white border border-slate-200 p-10 md:p-16 transition-all hover:border-blue-600 hover:shadow-2xl hover:shadow-blue-900/5 overflow-hidden relative"
-                >
-                  <div className="flex items-start justify-between mb-16">
-                    <cap.icon className="text-slate-900 group-hover:text-blue-600 transition-colors" size={40} strokeWidth={1.5} />
-                    <span className="font-mono text-[10px] font-bold text-slate-300 tracking-tighter uppercase">{cap.tag} // SYSTEM_MODULE</span>
-                  </div>
-
-                  <h3 className="text-5xl font-medium mb-6 text-slate-900 tracking-tight">{cap.category}</h3>
-                  <p className="text-xl text-slate-500 mb-16 max-w-xl leading-relaxed">{cap.description}</p>
-
-                  <div className="space-y-2 border-t border-slate-100 pt-12">
-                    {cap.items.map((item, i) => (
-                        <div key={i} className="flex items-center justify-between group/item py-5 border-b border-slate-50 last:border-0 transition-colors hover:bg-slate-50/50 px-2">
-                            <div className="max-w-md">
-                                <h4 className="font-bold text-slate-900 text-lg mb-1">{item.title}</h4>
-                                <p className="text-sm text-slate-500 leading-relaxed">{item.details}</p>
-                            </div>
-                            <ChevronRight size={18} className="text-slate-200 group-hover/item:translate-x-2 group-hover/item:text-blue-600 transition-all" />
-                        </div>
-                    ))}
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
+     
+           {/* ── CAPABILITIES ── */}
+           <section className="py-40 bg-slate-50">
+             <div className="container mx-auto max-w-7xl px-6">
+               <div className="grid grid-cols-1 lg:grid-cols-12 gap-20">
+                 <div className="lg:col-span-4 lg:sticky lg:top-40 h-fit">
+                   <SectionLabel text="Capabilities Matrix" />
+                   <h2 className="text-5xl font-medium text-slate-900 mb-8 tracking-tight">
+                     Core Systems <br />Engineering.
+                   </h2>
+                   <p className="text-slate-500 text-lg leading-relaxed mb-10">
+                     We design and implement the mission-critical infrastructure that allows 
+                     businesses to scale with total architectural confidence.
+                   </p>
+                   <div className="space-y-4">
+                     {capabilities.map((cap, idx) => (
+                       <div 
+                         key={idx}
+                         className={`text-xs uppercase tracking-[0.3em] font-bold transition-all flex items-center gap-4 ${hoveredCapability === idx ? 'text-blue-600' : 'text-slate-300'}`}
+                       >
+                         <span className="w-8 h-px bg-current" />
+                         {`0${idx + 1} — ${cap.category}`}
+                       </div>
+                     ))}
+                   </div>
+                 </div>
+     
+                 <div className="lg:col-span-8 space-y-6">
+                   {capabilities.map((cap, idx) => (
+                     <motion.div
+                       key={idx}
+                       onMouseEnter={() => setHoveredCapability(idx)}
+                       onMouseLeave={() => setHoveredCapability(null)}
+                       initial={{ opacity: 0, y: 20 }}
+                       whileInView={{ opacity: 1, y: 0 }}
+                       viewport={{ once: true }}
+                       className="group bg-white border border-slate-200 p-10 md:p-16 transition-all hover:border-blue-600 hover:shadow-2xl hover:shadow-blue-200/20"
+                     >
+                       <div className="flex items-start justify-between mb-16">
+                         <div className="p-4 bg-slate-50 text-slate-900 group-hover:bg-blue-600 group-hover:text-white transition-all duration-500">
+                           <cap.icon size={36} strokeWidth={1} />
+                         </div>
+                         <span className="font-mono text-xs text-slate-300 tracking-widest">SYSTEM_NODE_{cap.category.slice(0,3).toUpperCase()}</span>
+                       </div>
+     
+                       <h3 className="text-5xl font-medium mb-6 text-slate-900 tracking-tight">{cap.category}</h3>
+                       <p className="text-slate-500 text-xl mb-12 max-w-xl leading-relaxed">{cap.description}</p>
+     
+                       <div className="grid grid-cols-1 gap-8 border-t border-slate-100 pt-10">
+                         {cap.items.map((item, i) => (
+                           <div key={i} className="flex items-center justify-between group/item py-2">
+                             <div className="max-w-md">
+                               <h4 className="font-bold text-slate-900 text-lg mb-2">{item.title}</h4>
+                               <p className="text-sm text-slate-500 leading-relaxed">{item.details}</p>
+                             </div>
+                             <div className="w-12 h-12 flex items-center justify-center border border-slate-100 group-hover/item:border-blue-600 group-hover/item:bg-blue-50 transition-all">
+                                <ChevronRight size={18} className="text-slate-300 group-hover/item:text-blue-600" />
+                             </div>
+                           </div>
+                         ))}
+                       </div>
+                     </motion.div>
+                   ))}
+                 </div>
+               </div>
+             </div>
+           </section>
 
       {/* ══════════════════════════════════════════════════════════════════════
           NEW: PRINCIPLES (ESTABLISHING AUTHORITY)
@@ -320,6 +329,55 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+
+       {/* ── NEW: WHAT WE SOLVE ── */}
+      <section className="py-40 border-b border-slate-100">
+        <div className="container px-6 mx-auto">
+          <div className="grid lg:grid-cols-2 gap-24 items-center">
+            <div>
+              <SectionLabel text="Problem Space" />
+              <h2 className="text-6xl font-medium tracking-tight mb-10 text-slate-900 leading-[1.1]">
+                We solve for the <span className="italic text-blue-600 font-light">inevitable</span> bottlenecks of growth.
+              </h2>
+              <div className="space-y-12 mt-16">
+                {[
+                  { q: "Architecture Rot", a: "Stopping the spiral of technical debt before it halts product velocity." },
+                  { q: "Security Gaps", a: "Hardening financial and user data against sophisticated attack vectors." },
+                  { q: "Performance Latency", a: "Eliminating the bottlenecks that degrade user experience and conversion." }
+                ].map((item, i) => (
+                  <div key={i} className="flex gap-8">
+                    <span className="text-blue-600 font-mono text-lg font-bold">0{i+1}.</span>
+                    <div>
+                      <h4 className="text-2xl font-medium mb-2 text-slate-900">{item.q}</h4>
+                      <p className="text-slate-500 text-lg leading-relaxed">{item.a}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="relative">
+              <div className="aspect-square bg-slate-900 p-12 flex flex-col justify-between overflow-hidden relative">
+                <div className="absolute top-0 right-0 w-full h-full opacity-20 pointer-events-none">
+                  <div className="w-full h-full bg-[repeating-linear-gradient(45deg,transparent,transparent_20px,rgba(255,255,255,0.05)_20px,rgba(255,255,255,0.05)_40px)]" />
+                </div>
+                <Terminal className="text-blue-500" size={40} />
+                <div>
+                  <div className="text-blue-500 font-mono text-sm mb-4 tracking-tighter animate-pulse"># EXECUTING_SYSTEM_OVERRIDE</div>
+                  <h3 className="text-4xl text-white font-medium tracking-tight mb-6">Built for those who understand that software is an asset, not an expense.</h3>
+                  <div className="flex gap-2">
+                    <div className="h-1 w-12 bg-blue-600" />
+                    <div className="h-1 w-4 bg-slate-700" />
+                    <div className="h-1 w-4 bg-slate-700" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      
 
       {/* ══════════════════════════════════════════════════════════════════════
           METHODOLOGY: INDUSTRIAL PRECISION (PRESERVED)
@@ -399,44 +457,51 @@ export default function HomePage() {
       {/* ══════════════════════════════════════════════════════════════════════
           CTA: THE HIGH-VALUE INVITATION
       ══════════════════════════════════════════════════════════════════════ */}
-      <section className="py-48 bg-slate-900 relative overflow-hidden">
-        {/* Architectural Background lines for CTA */}
-        <div className="absolute inset-0 z-0 opacity-20 pointer-events-none">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 h-full w-[1px] bg-slate-700" />
-          <div className="absolute top-1/2 left-0 -translate-y-1/2 w-full h-[1px] bg-slate-700" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(37,99,235,0.1)_0%,transparent_70%)]" />
-        </div>
+      <section className="py-40 bg-white relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent" />
+        
+        <div className="container px-6 mx-auto relative z-10 text-center">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="max-w-5xl mx-auto border-2 border-slate-900 p-12 md:p-24 relative"
+          >
+            {/* Corner Accents */}
+            <div className="absolute -top-[2px] -left-[2px] w-8 h-8 border-t-4 border-l-4 border-blue-600" />
+            <div className="absolute -bottom-[2px] -right-[2px] w-8 h-8 border-b-4 border-r-4 border-blue-600" />
 
-        <div className="container px-6 mx-auto text-center relative z-10">
-          <div className="max-w-4xl mx-auto">
-            <motion.div
-              whileInView={{ scale: [0.95, 1], opacity: [0, 1] }}
-              viewport={{ once: true }}
-              className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-slate-800 mb-10 bg-slate-900/80 backdrop-blur-md"
-            >
-              <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
-              <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-slate-400">Available for select partnerships Q2 2024</span>
-            </motion.div>
-            
-            <h2 className="text-6xl md:text-8xl font-medium tracking-tighter mb-12 text-white" style={{ fontFamily: "var(--font-dm-serif), serif" }}>
-              Build it <span className="italic text-blue-500 font-light">properly.</span>
+            <SectionLabel text="Final Transmission" />
+            <h2 className="text-5xl md:text-8xl font-medium tracking-tighter mb-8 text-slate-900 leading-[0.9]">
+              If your system matters, <br />build it properly.
             </h2>
-            
-            <p className="text-2xl text-slate-400 mb-16 leading-relaxed">
-              If your product requires technical authority, engineer it with a team that understands scale, security, and performance.
+            <p className="text-slate-500 text-xl md:text-2xl mb-14 leading-relaxed max-w-3xl mx-auto font-normal">
+              We partner with a limited number of clients per year to ensure every line of code meets our standard of technical excellence.
             </p>
             
-            <div className="flex flex-col items-center gap-8">
-              <button className="bg-blue-600 text-white px-16 py-7 text-xl font-bold hover:bg-white hover:text-slate-900 transition-all active:scale-95 shadow-2xl shadow-blue-500/20">
-                Inquire via Terminal
+            <div className="flex flex-col md:flex-row items-center justify-center gap-6">
+              <button className="w-full md:w-auto bg-blue-600 text-white px-12 py-6 text-lg font-bold hover:bg-slate-900 transition-all active:scale-95 shadow-2xl shadow-blue-200 flex items-center justify-center gap-4">
+                Initialize Consultation
+                <ArrowUpRight size={20} />
               </button>
-              
-              <div className="flex gap-12 font-mono text-[10px] text-slate-500 font-bold uppercase tracking-widest">
-                <span>Response Time: &lt; 24h</span>
-                <span>Secure Connection</span>
-                <span>Elite Access</span>
+              <div className="text-[10px] font-mono text-slate-400 uppercase tracking-[0.4em] md:text-left">
+                Average Response: &lt; 24 Hours <br />
+                Availability: Q3/Q4 2024
               </div>
             </div>
+          </motion.div>
+
+          {/* Credibility Footer */}
+          <div className="mt-24 pt-12 border-t border-slate-100 flex flex-col md:flex-row justify-between items-center gap-8">
+             <div className="flex items-center gap-3">
+               <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+               <span className="text-xs font-mono text-slate-500 uppercase tracking-widest font-bold">Protocol Stable // Secure Connection</span>
+             </div>
+             <div className="flex gap-10">
+                <span className="text-[10px] font-mono text-slate-300 uppercase tracking-widest hover:text-blue-600 cursor-pointer transition-colors">Documentation</span>
+                <span className="text-[10px] font-mono text-slate-300 uppercase tracking-widest hover:text-blue-600 cursor-pointer transition-colors">Privacy Policy</span>
+                <span className="text-[10px] font-mono text-slate-300 uppercase tracking-widest hover:text-blue-600 cursor-pointer transition-colors">Terms of Service</span>
+             </div>
           </div>
         </div>
       </section>
