@@ -1,23 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { 
-  ArrowUpRight, 
-  PlusCircle, 
-  
-  ShieldCheck, 
-  Zap, 
-  
-} from "lucide-react";
-
-// ─── REFINED DATA WITH STRONGER PERSUASION ──────────────────────────────────
+import React from "react";
+import { motion } from "framer-motion";
+import { CheckCircle2 } from "lucide-react";
 
 
 
-export default function ServiceSpectrum() {
-  
-
+export default function AdvantageSection() {
   return (
    
   );

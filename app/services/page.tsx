@@ -70,9 +70,18 @@ const servicePillars = [
 ];
 
 const trustPoints = [
-  { title: "Technical Rigor", desc: "Every line of code is benchmarked for performance and security before it ever reaches production." },
-  { title: "Transparent Process", desc: "No black boxes. You have full visibility into our architectural decisions and progress." },
-  { title: "Selective Partnership", desc: "We only take on a few projects at a time to ensure your system gets our full attention." }
+  { 
+    title: "Technical Rigor", 
+    desc: "Every line of code is benchmarked for performance and security before it ever reaches production." 
+  },
+  { 
+    title: "Transparent Process", 
+    desc: "No black boxes. You have full visibility into our architectural decisions and progress." 
+  },
+  { 
+    title: "Selective Partnership", 
+    desc: "We only take on a few projects at a time to ensure your system gets our full attention." 
+  }
 ];
 
 // ─── COMPONENTS ──────────────────────────────────────────────────────────
@@ -347,49 +356,125 @@ export default function ServicesPage() {
     </section>
 
         {/* ── 10. VISUAL RHYTHM: TEXT RIGHT / IMAGE LEFT ── */}
-        <section className="py-40 bg-slate-50 overflow-hidden">
-          <div className="container px-6 mx-auto">
-            <div className="grid lg:grid-cols-2 gap-24 items-center">
-              <div className="relative order-2 lg:order-1">
-                <div className="relative z-10 aspect-[4/5] overflow-hidden shadow-3xl">
-                  <img 
-                    src="https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&q=80&w=1200" 
-                    alt="Engineering Process" 
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                {/* 6. CLEARLY VISIBLE IMAGE OVERLAYS */}
-                <div className="absolute -bottom-10 -right-10 w-64 h-64 bg-white p-8 shadow-2xl z-20 hidden md:block">
-                  <div className="w-10 h-1 bg-blue-600 mb-6" />
-                  <p className="text-sm font-bold leading-relaxed">"We work as an integrated unit within your team, not an isolated vendor."</p>
-                </div>
-              </div>
+       <section className="relative py-32 md:py-48 bg-slate-50 overflow-visible">
+      {/* Background Decorative Element - Breaking the Box */}
+      <div className="absolute top-0 right-0 w-1/3 h-full bg-white/50 pointer-events-none hidden lg:block" />
+      
+      <div className="container px-6 mx-auto">
+        <div className="relative grid lg:grid-cols-12 gap-16 lg:gap-8 items-start">
+          
+          {/* IMAGE SIDE: Layered Editorial Composition */}
+          <div className="lg:col-span-6 relative group">
+            <div className="relative overflow-visible">
+              {/* Primary Image with Fluid Reveal */}
+              <motion.div
+                initial={{ opacity: 0, clipPath: "inset(100% 0% 0% 0%)" }}
+                whileInView={{ opacity: 1, clipPath: "inset(0% 0% 0% 0%)" }}
+                viewport={{ once: true }}
+                transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+                className="relative z-10 aspect-[4/5] shadow-3xl overflow-hidden"
+              >
+                <motion.img
+                  initial={{ scale: 1.1 }}
+                  whileInView={{ scale: 1 }}
+                  transition={{ duration: 1.5 }}
+                  src="https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&q=80&w=1200"
+                  alt="Engineering Process"
+                  className="w-full h-full object-cover"
+                />
+              </motion.div>
 
-              <div className="order-1 lg:order-2">
-                <SectionLabel text="The Advantage" />
-                <h2 className="text-5xl md:text-7xl font-medium tracking-tight mb-8">
-                  Engineering clarity for high-growth teams.
-                </h2>
-                <p className="text-xl text-slate-500 leading-relaxed mb-12">
-                  Generic agencies optimize for billable hours. We optimize for system health and engineering velocity. Our goal is to leave your codebase and your team in a better position than we found them.
-                </p>
-                <div className="space-y-8">
-                  {trustPoints.map((item, i) => (
-                    <div key={i} className="flex gap-6">
-                      <div className="flex-shrink-0 w-12 h-12 bg-white flex items-center justify-center text-blue-600 shadow-sm">
-                        <CheckCircle2 size={24} />
-                      </div>
-                      <div>
-                        <h4 className="text-xl font-bold mb-2">{item.title}</h4>
-                        <p className="text-slate-500 text-base leading-relaxed">{item.desc}</p>
-                      </div>
-                    </div>
-                  ))}
+              {/* Decorative Geometric Background - Softens the Rectangle */}
+              <motion.div 
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.5, duration: 1 }}
+                className="absolute -top-10 -left-10 w-40 h-40 bg-blue-50 -z-10 hidden md:block"
+              />
+
+              {/* FLOATING TRUST NOTE: Integrated Overlay */}
+              <motion.div
+                initial={{ opacity: 0, y: 40, x: 20 }}
+                whileInView={{ opacity: 1, y: 0, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.6, duration: 0.8, ease: "easeOut" }}
+                className="absolute -bottom-12 -right-6 md:-right-12 z-20 w-72 bg-white p-10 shadow-[20px_20px_60px_rgba(0,0,0,0.08)] border-l-4 border-blue-600"
+              >
+                <div className="flex flex-col gap-4">
+                  <div className="flex gap-1">
+                    {[1, 2, 3, 4, 5].map((s) => (
+                      <div key={s} className="w-1 h-1 bg-blue-600 rounded-full" />
+                    ))}
+                  </div>
+                  <p className="text-base font-medium leading-relaxed text-slate-900 tracking-tight italic">
+                    "We work as an integrated unit within your team, not an isolated vendor."
+                  </p>
+                  <span className="text-[10px] font-mono uppercase tracking-widest text-slate-400 font-bold">
+                    Partnership Principle
+                  </span>
                 </div>
-              </div>
+              </motion.div>
             </div>
           </div>
-        </section>
+
+          {/* TEXT SIDE: Staged Hierarchy & Rhythm */}
+          <div className="lg:col-span-5 lg:offset-1 flex flex-col pt-8 lg:pt-20">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+            >
+              <div className="flex items-center gap-3 mb-8">
+                <span className="w-10 h-px bg-blue-600" />
+                <span className="text-[10px] font-mono uppercase tracking-[0.4em] font-bold text-slate-400">
+                  The Advantage
+                </span>
+              </div>
+
+              <h2 className="text-5xl md:text-7xl font-medium tracking-tighter leading-[0.95] mb-10 text-slate-900">
+                Engineering clarity <br />
+                <span className="text-blue-600 italic font-light">for high-growth</span> teams.
+              </h2>
+
+              <p className="text-xl text-slate-500 leading-relaxed mb-16 max-w-lg font-normal">
+                Generic agencies optimize for billable hours. We optimize for system health and engineering velocity. Our goal is to leave your codebase and your team in a better position than we found them.
+              </p>
+            </motion.div>
+
+            {/* TRUST POINTS: Premium Editorial Treatment */}
+            <div className="space-y-10 relative">
+              {/* Vertical Connector Line for Rhythm */}
+              <div className="absolute left-6 top-2 bottom-2 w-px bg-slate-100 hidden md:block" />
+
+              {trustPoints.map((item, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.2 + 0.4, duration: 0.6 }}
+                  className="relative flex gap-8 group"
+                >
+                  <div className="relative flex-shrink-0 w-12 h-12 bg-white flex items-center justify-center text-blue-600 shadow-sm border border-slate-100 transition-colors group-hover:bg-blue-600 group-hover:text-white group-hover:border-blue-600 duration-500">
+                    <CheckCircle2 size={20} />
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <h4 className="text-xl font-bold tracking-tight text-slate-900">
+                      {item.title}
+                    </h4>
+                    <p className="text-slate-500 text-base leading-relaxed max-w-sm opacity-80 group-hover:opacity-100 transition-opacity duration-500">
+                      {item.desc}
+                    </p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
 
         {/* ── 5. FULL-WIDTH VISUAL MOMENT ── */}
         <section className="h-[70vh] relative overflow-hidden group">
