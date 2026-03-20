@@ -169,7 +169,7 @@ export default function Navbar() {
               </div>
 
               <div className="px-6 py-3">
-                {navbar.map((link, i) => (
+                {Navbar.map((link, i) => (
                   <motion.div
                     key={link.name}
                     initial={{ opacity: 0, x: -10 }}
