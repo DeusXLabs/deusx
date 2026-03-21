@@ -56,7 +56,7 @@ export default function CompanyPage() {
       <section className="py-32">
         <div className="container max-w-[800px] mx-auto px-6 text-center">
           <h2 className="text-3xl md:text-5xl font-[900] text-slate-900 mb-8 tracking-tight">Why Choose DeusX?</h2>
-          <p className="text-slate-500 text-xl font-medium leading-relaxed mb-12">Clients choose us because we don't just provide "hours." We provide technical depth, product-minded execution, and a partnership built on radical transparency.</p>
+          <p className="text-slate-500 text-xl font-medium leading-relaxed mb-12">Clients choose us because we dontt just provide hours. We provide technical depth, product-minded execution, and a partnership built on radical transparency.</p>
           <button className="px-10 py-4 bg-[#0055FF] text-white rounded-full font-bold text-lg">Partner with Us</button>
         </div>
       </section>

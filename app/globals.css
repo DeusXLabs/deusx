@@ -51,3 +51,68 @@
     mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
   }
 }
+
+@keyframes typing1 {
+  from { width: 0 }
+  to { width: 30ch }
+}
+
+@keyframes typing2 {
+  from { width: 0 }
+  to { width: 33ch }
+}
+
+@keyframes typing3 {
+  from { width: 0 }
+  to { width: 28ch }
+}
+
+@keyframes typing4 {
+  from { width: 0 }
+  to { width: 16ch }
+}
+
+@keyframes blink {
+  50% { border-color: transparent }
+}
+
+@keyframes revealMockup {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+@keyframes codeExit {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-18px) scale(0.98);
+  }
+}
+
+@keyframes revealScreen {
+  0% {
+    opacity: 0;
+    transform: translateY(24px) scale(0.94);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes screenFloat {
+  0%, 100% {
+    transform: rotate(-10deg) skewY(-2deg) scale(0.96) translateY(0);
+  }
+  50% {
+    transform: rotate(-10deg) skewY(-2deg) scale(0.96) translateY(-8px);
+  }
+}

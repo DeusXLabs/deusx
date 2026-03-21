@@ -1,7 +1,7 @@
 "use client";
 
-import React, {useState} from "react";
-import {motion, useScroll, useTransform} from "framer-motion";
+import React, {useEffect, useState, useRef} from "react";
+import {motion, useScroll, useTransform, useInView} from "framer-motion";
 import {
   ArrowUpRight,
   ShieldCheck,
@@ -198,22 +198,22 @@ const capabilities = [
 const principles = [
   {
     title: "Scalability First",
-    desc: "We design with the assumption that your load will 100x.",
+    desc: "We build with growth in mind so your software keeps up as your business expands.",
     icon: Zap,
   },
   {
-    title: "Secure by Design",
-    desc: "Security isn't a feature; it's the foundation of every line written.",
+    title: "Securely designed",
+    desc: "Security is built in from the start so your business and your users are always protected.",
     icon: Lock,
   },
   {
-    title: "Architecture Integrity",
-    desc: "We build systems that are maintainable a decade from now.",
+    title: "Architecture & Structure",
+    desc: "We build software that’s easy to manage, improve and rely on for years to come.",
     icon: Boxes,
   },
   {
     title: "Clarity over Complexity",
-    desc: "Clean code and documentation are the marks of seniority.",
+    desc: "We keep things clear and simple, so your software is easier to use, maintain and grow",
     icon: Terminal,
   },
 ];
@@ -235,6 +235,22 @@ export default function HomePage() {
   );
   const {scrollYProgress} = useScroll();
   const opacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
+
+  const solveSectionRef = useRef<HTMLDivElement | null>(null);
+  const solveInView = useInView(solveSectionRef, {
+    once: false,
+    amount: 0.45,
+  });
+
+  const [solveReplayKey, setSolveReplayKey] = useState(0);
+
+  useEffect(() => {
+  if (!solveInView) return;
+
+  setSolveReplayKey((prev) => prev + 1);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, [solveInView]);
 
   return (
     <main className="bg-white selection:bg-blue-600 selection:text-white antialiased">
@@ -414,7 +430,7 @@ export default function HomePage() {
                 {capabilities.map((cap, idx) => (
                   <div
                     key={idx}
-                    className={`text-xs uppercase tracking-[0.3em] font-bold transition-all flex items-center gap-4 ${hoveredCapability === idx ? "text-blue-600" : "text-slate-300"}`}
+                    className={`text-xs uppercase tracking-[0.3em] font-bold transition-all flex items-center gap-4 ${hoveredCapability === idx ? "text-blue-600" : "text-slate-500"}`}
                   >
                     <span className="w-8 h-px bg-current" />
                     {`0${idx + 1} — ${cap.category}`}
@@ -486,7 +502,7 @@ export default function HomePage() {
       <section className="py-32 bg-white">
         <div className="container mx-auto px-6">
           <SectionLabel text="The DeusX Way" />
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-slate-100 border border-slate-100">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-slate-300 border border-slate-300">
             {principles.map((p, i) => (
               <div
                 key={i}
@@ -516,25 +532,25 @@ export default function HomePage() {
             <div>
               <SectionLabel text="Problem Space" />
               <h2 className="text-6xl font-medium tracking-tight mb-10 text-slate-900 leading-[1.1]">
-                We solve for the{" "}
+                We solve the{" "}
                 <span className="italic text-blue-600 font-light">
-                  inevitable
+                  software challenges
                 </span>{" "}
-                bottlenecks of growth.
+                that come with growth.
               </h2>
               <div className="space-y-12 mt-16">
                 {[
                   {
-                    q: "Architecture Rot",
-                    a: "Stopping the spiral of technical debt before it halts product velocity.",
+                    q: "Scaling Issues",
+                    a: "Your software may start struggling to keep up as your business grows, making updates slower and harder to manage.",
                   },
                   {
-                    q: "Security Gaps",
-                    a: "Hardening financial and user data against sophisticated attack vectors.",
+                    q: "Security Risks",
+                    a: "Uncertainty whether your data and infromation are properly protected",
                   },
                   {
-                    q: "Performance Latency",
-                    a: "Eliminating the bottlenecks that degrade user experience and conversion.",
+                    q: "Performance Delays",
+                    a: "Your product may start to become slow, unreliable or starts breaking under real usage",
                   },
                 ].map((item, i) => (
                   <div key={i} className="flex gap-8">
@@ -553,24 +569,120 @@ export default function HomePage() {
                 ))}
               </div>
             </div>
-            <div className="relative">
-              <div className="aspect-square bg-slate-900 p-12 flex flex-col justify-between overflow-hidden relative">
-                <div className="absolute top-0 right-0 w-full h-full opacity-20 pointer-events-none">
-                  <div className="w-full h-full bg-[repeating-linear-gradient(45deg,transparent,transparent_20px,rgba(255,255,255,0.05)_20px,rgba(255,255,255,0.05)_40px)]" />
+            <div ref={solveSectionRef} className="relative">
+              <div className="aspect-square bg-slate-900 p-12 overflow-hidden relative border border-slate-800">
+                {/* subtle diagonal texture */}
+                <div className="absolute inset-0 opacity-20 pointer-events-none">
+                  <div className="w-full h-full bg-[repeating-linear-gradient(45deg,transparent,transparent_20px,rgba(255,255,255,0.04)_20px,rgba(255,255,255,0.04)_40px)]" />
                 </div>
-                <Terminal className="text-blue-500" size={40} />
-                <div>
-                  <div className="text-blue-500 font-mono text-sm mb-4 tracking-tighter animate-pulse">
-                    # EXECUTING_SYSTEM_OVERRIDE
-                  </div>
-                  <h3 className="text-4xl text-white font-medium tracking-tight mb-6">
-                    Built for those who understand that software is an asset,
-                    not an expense.
-                  </h3>
-                  <div className="flex gap-2">
-                    <div className="h-1 w-12 bg-blue-600" />
-                    <div className="h-1 w-4 bg-slate-700" />
-                    <div className="h-1 w-4 bg-slate-700" />
+
+                {/* soft blue glow */}
+                <div className="absolute -right-20 -bottom-20 h-72 w-72 rounded-full bg-blue-600/10 blur-3xl pointer-events-none" />
+
+                <div className="relative z-10 h-full flex flex-col justify-between">
+                  <Terminal className="text-blue-500" size={40} />
+
+                  <div className="grid h-full grid-rows-[1fr_auto] gap-8 pt-10">
+                    {/* animated code area */}
+                    <div
+                      key={solveReplayKey}
+                      className="relative rounded-2xl border border-slate-800/80 bg-slate-950/55 p-6 overflow-hidden"
+                    >
+                      <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(255,255,255,0.02),transparent)] pointer-events-none" />
+
+                      <div
+                        className={`font-mono text-[13px] leading-7 text-slate-400 ${
+                          solveInView
+                            ? "animate-[codeExit_700ms_ease-in_4.6s_forwards]"
+                            : ""
+                        }`}
+                      >
+                        <div
+                          className={`overflow-hidden whitespace-nowrap w-0 ${
+                            solveInView
+                              ? "animate-[typing1_1.2s_steps(29,end)_forwards]"
+                              : ""
+                          }`}
+                        >
+                          initializing product_engine...
+                        </div>
+
+                        <div
+                          className={`mt-2 overflow-hidden whitespace-nowrap w-0 ${
+                            solveInView
+                              ? "animate-[typing2_1.2s_steps(36,end)_1.4s_forwards]"
+                              : ""
+                          }`}
+                        >
+                          loading auth, payments, analytics...
+                        </div>
+
+                        <div
+                          className={`mt-2 overflow-hidden whitespace-nowrap w-0 ${
+                            solveInView
+                              ? "animate-[typing3_1s_steps(28,end)_2.8s_forwards]"
+                              : ""
+                          }`}
+                        >
+                          running deployment checks...
+                        </div>
+
+                        <div
+                          className={`mt-2 overflow-hidden whitespace-nowrap w-0 text-blue-400 ${
+                            solveInView
+                              ? "animate-[typing4_0.8s_steps(16,end)_4s_forwards]"
+                              : ""
+                          }`}
+                        >
+                          build complete ✓
+                        </div>
+                      </div>
+
+                      {/* real image reveal */}
+                      <div
+                        className={`pointer-events-none absolute inset-0 flex items-center justify-center opacity-0 ${
+                          solveInView
+                            ? "animate-[revealScreen_900ms_ease-out_5s_forwards]"
+                            : ""
+                        }`}
+                      >
+                        <div className="relative transform-gpu [perspective:1400px]">
+                          <div className="absolute inset-0 translate-x-8 translate-y-10 scale-90 rounded-[32px] bg-blue-500/20 blur-3xl" />
+
+                          <img
+                            src="new_tablet.png"
+                            alt="Analytics dashboard preview"
+                            className={`relative z-10 w-[340px] md:w-[390px] drop-shadow-[0_30px_60px_rgba(0,0,0,0.45)] [transform:rotate(-5deg)_skewY(-1deg)_scale(0.96)] ${
+                              solveInView
+                                ? "animate-[screenFloat_6s_ease-in-out_6s_infinite]"
+                                : ""
+                            }`}
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* text area */}
+                    <div>
+                      <div className="text-blue-500 font-mono text-sm mb-4 tracking-tight">
+                        #DEPLOYMENT_SEQUENCE
+                      </div>
+
+                      <h3 className="text-4xl text-white font-medium tracking-tight mb-4 max-w-xl">
+                        We build software people can rely on.
+                      </h3>
+
+                      <p className="text-slate-400 text-base leading-relaxed max-w-md mb-6">
+                        Built to work well, scale well, and feel ready for real
+                        use.
+                      </p>
+
+                      <div className="flex gap-2">
+                        <div className="h-1 w-12 bg-blue-600" />
+                        <div className="h-1 w-4 bg-slate-700" />
+                        <div className="h-1 w-4 bg-slate-700" />
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
