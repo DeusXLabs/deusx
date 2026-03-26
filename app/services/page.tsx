@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef } from "react";
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { motion, useScroll, useTransform, AnimatePresence, Variants } from "framer-motion";
 import { 
   ArrowUpRight, 
   MoveRight,
@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 
 import Navbar from "../components/layout/Navbar";
+import Footer from "../components/layout/Footer";
 
 // ─── DATA ──────────────────────────────────────────────────────────
 
@@ -100,8 +101,9 @@ const SectionLabel = ({ text }: { text: string }) => (
 export default function ServicesPage() {
   const [activeSlide, setActiveSlide] = useState(0);
 
-  // Animation variants for the progressive reveal
-  const containerVariants = {
+  // ── FIX: type ease as a const tuple so TS satisfies Framer Motion's
+  //    Easing type. number[] is too wide — it needs [n,n,n,n] exactly.
+  const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: { 
       opacity: 1,
@@ -109,21 +111,27 @@ export default function ServicesPage() {
     }
   };
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } }
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
+      },
+    },
   };
 
   const Icon = servicePillars[activeSlide].pillarIcon;
 
   return (
     <div className="bg-white">
-      {/* 1 & 2. Existing Navbar Integration */}
       <Navbar />
 
       <main className="text-slate-900 selection:bg-blue-600 selection:text-white">
         
-        {/* ── 8. STRONGER HERO ── */}
+        {/* ── HERO ── */}
         <section className="relative min-h-[90vh] flex flex-col justify-center pt-24 overflow-hidden border-b border-slate-100">
           <div className="container px-6 mx-auto grid lg:grid-cols-12 gap-12 items-center">
             <div className="lg:col-span-7 relative z-10">
@@ -139,7 +147,7 @@ export default function ServicesPage() {
               <motion.h1 
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
                 className="text-6xl md:text-8xl lg:text-[7.5rem] font-medium tracking-tighter leading-[0.9] mb-10"
               >
                 Deep Expertise <br />
@@ -203,280 +211,258 @@ export default function ServicesPage() {
           </div>
         </section>
 
-        {/* ── 9. IMPROVED VISUAL SHOWCASE ── */}
+        {/* ── SERVICE SHOWCASE ── */}
         <section className="py-32 bg-white overflow-hidden border-b border-slate-100">
-      <div className="container px-6 mx-auto">
-        
-        {/* Header and Smart Indicators */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-24 gap-12">
-          <div className="max-w-2xl">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-1.5 h-1.5 rounded-full bg-blue-600" />
-              <span className="text-[10px] font-mono uppercase tracking-[0.4em] font-bold text-slate-400">
-                Service Spectrum
-              </span>
-            </div>
-            <h2 className="text-5xl md:text-7xl font-medium tracking-tight text-slate-900">
-              Our Core Capabilities
-            </h2>
-          </div>
-
-          {/* Descriptive Navigation */}
-          <div className="flex flex-col gap-4">
-            <div className="flex gap-4">
-              {servicePillars.map((pillar, i) => (
-                <button 
-                  key={pillar.id}
-                  onClick={() => setActiveSlide(i)}
-                  className="group flex flex-col items-start gap-2 focus:outline-none"
-                >
-                  <span className={`text-[9px] font-mono font-bold tracking-widest uppercase transition-colors duration-300 ${activeSlide === i ? 'text-blue-600' : 'text-slate-300 group-hover:text-slate-500'}`}>
-                    0{i + 1}
+          <div className="container px-6 mx-auto">
+            
+            <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-24 gap-12">
+              <div className="max-w-2xl">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-1.5 h-1.5 rounded-full bg-blue-600" />
+                  <span className="text-[10px] font-mono uppercase tracking-[0.4em] font-bold text-slate-400">
+                    Service Spectrum
                   </span>
-                  <div className={`h-[2px] transition-all duration-500 relative overflow-hidden ${activeSlide === i ? 'w-32 bg-blue-600' : 'w-12 bg-slate-100 group-hover:bg-slate-200'}`}>
-                    {activeSlide === i && (
-                      <motion.div 
-                        layoutId="nav-glow"
-                        className="absolute inset-0 bg-blue-400 blur-sm opacity-50"
-                      />
-                    )}
-                  </div>
-                </button>
-              ))}
-            </div>
-            <p className="text-[11px] font-mono text-slate-400 uppercase tracking-wider font-bold">
-              {servicePillars[activeSlide].title} / Active Pillar
-            </p>
-          </div>
-        </div>
-
-        {/* Persuasive Storytelling Content */}
-        <div className="relative">
-          <AnimatePresence mode="wait">
-            <motion.div 
-              key={activeSlide}
-              variants={containerVariants}
-              initial="hidden"
-              animate="visible"
-              exit={{ opacity: 0, x: -20, transition: { duration: 0.3 } }}
-              className="grid lg:grid-cols-12 gap-16 lg:gap-24 items-start"
-            >
-              {/* Visual Storytelling Side */}
-              <div className="lg:col-span-6 group relative">
-                <motion.div 
-                  variants={itemVariants}
-                  className="relative aspect-[4/5] lg:aspect-[3/4] overflow-hidden shadow-2xl"
-                >
-                  <motion.img 
-                    initial={{ scale: 1.1 }}
-                    animate={{ scale: 1 }}
-                    transition={{ duration: 1.5, ease: "easeOut" }}
-                    src={servicePillars[activeSlide].image} 
-                    alt={servicePillars[activeSlide].title}
-                    className="w-full h-full object-cover transition-transform duration-[3s] group-hover:scale-105"
-                  />
-                  {/* Image Labels for Trust */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent opacity-60" />
-                  <div className="absolute bottom-8 left-8 text-white z-10">
-                    <div className="flex items-center gap-3 mb-2">
-                       <Icon size={18} className="text-blue-400" />
-                       <span className="text-[10px] font-mono uppercase tracking-[0.2em] font-bold">Capability_Node / {servicePillars[activeSlide].id}</span>
-                    </div>
-                    <p className="text-sm font-medium opacity-80 max-w-[240px]">Ensuring engineering integrity in high-stakes technical environments.</p>
-                  </div>
-                </motion.div>
-                
-                {/* Visual Accent */}
-                <motion.div 
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.8 }}
-                  className="absolute -top-6 -right-6 w-32 h-32 border border-slate-100 rounded-full hidden xl:flex items-center justify-center bg-white/50 backdrop-blur-sm shadow-sm"
-                >
-                   <div className="text-center">
-                      <span className="block text-[10px] font-mono font-bold text-blue-600 tracking-tighter uppercase leading-none">Status</span>
-                      <span className="text-xs font-bold uppercase tracking-widest text-slate-900">Elite</span>
-                   </div>
-                </motion.div>
+                </div>
+                <h2 className="text-5xl md:text-7xl font-medium tracking-tight text-slate-900">
+                  Our Core Capabilities
+                </h2>
               </div>
 
-              {/* Descriptive Persuasion Side */}
-              <div className="lg:col-span-6 flex flex-col pt-4">
-                <motion.div variants={itemVariants} className="mb-6">
-                  <span className="text-blue-600 font-mono text-xs font-bold uppercase tracking-[0.3em] block mb-4">
-                    [{servicePillars[activeSlide].impact}]
-                  </span>
-                  <h3 className="text-5xl md:text-6xl font-medium tracking-tighter leading-[0.95] mb-8 text-slate-900">
-                    {servicePillars[activeSlide].tagline}
-                  </h3>
-                  <p className="text-xl text-slate-500 leading-relaxed mb-12 font-normal border-l-2 border-slate-100 pl-8">
-                    {servicePillars[activeSlide].description}
+              <div className="flex flex-col gap-4">
+                <div className="flex gap-4">
+                  {servicePillars.map((pillar, i) => (
+                    <button 
+                      key={pillar.id}
+                      onClick={() => setActiveSlide(i)}
+                      className="group flex flex-col items-start gap-2 focus:outline-none"
+                    >
+                      <span className={`text-[9px] font-mono font-bold tracking-widest uppercase transition-colors duration-300 ${activeSlide === i ? 'text-blue-600' : 'text-slate-300 group-hover:text-slate-500'}`}>
+                        0{i + 1}
+                      </span>
+                      <div className={`h-[2px] transition-all duration-500 relative overflow-hidden ${activeSlide === i ? 'w-32 bg-blue-600' : 'w-12 bg-slate-100 group-hover:bg-slate-200'}`}>
+                        {activeSlide === i && (
+                          <motion.div 
+                            layoutId="nav-glow"
+                            className="absolute inset-0 bg-blue-400 blur-sm opacity-50"
+                          />
+                        )}
+                      </div>
+                    </button>
+                  ))}
+                </div>
+                <p className="text-[11px] font-mono text-slate-400 uppercase tracking-wider font-bold">
+                  {servicePillars[activeSlide].title} / Active Pillar
+                </p>
+              </div>
+            </div>
+
+            <div className="relative">
+              <AnimatePresence mode="wait">
+                <motion.div 
+                  key={activeSlide}
+                  variants={containerVariants}
+                  initial="hidden"
+                  animate="visible"
+                  exit={{ opacity: 0, x: -20, transition: { duration: 0.3 } }}
+                  className="grid lg:grid-cols-12 gap-16 lg:gap-24 items-start"
+                >
+                  <div className="lg:col-span-6 group relative">
+                    <motion.div 
+                      variants={itemVariants}
+                      className="relative aspect-[4/5] lg:aspect-[3/4] overflow-hidden shadow-2xl"
+                    >
+                      <motion.img 
+                        initial={{ scale: 1.1 }}
+                        animate={{ scale: 1 }}
+                        transition={{ duration: 1.5, ease: "easeOut" }}
+                        src={servicePillars[activeSlide].image} 
+                        alt={servicePillars[activeSlide].title}
+                        className="w-full h-full object-cover transition-transform duration-[3s] group-hover:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent opacity-60" />
+                      <div className="absolute bottom-8 left-8 text-white z-10">
+                        <div className="flex items-center gap-3 mb-2">
+                          <Icon size={18} className="text-blue-400" />
+                          <span className="text-[10px] font-mono uppercase tracking-[0.2em] font-bold">Capability_Node / {servicePillars[activeSlide].id}</span>
+                        </div>
+                        <p className="text-sm font-medium opacity-80 max-w-[240px]">Ensuring engineering integrity in high-stakes technical environments.</p>
+                      </div>
+                    </motion.div>
+                    
+                    <motion.div 
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: 0.8 }}
+                      className="absolute -top-6 -right-6 w-32 h-32 border border-slate-100 rounded-full hidden xl:flex items-center justify-center bg-white/50 backdrop-blur-sm shadow-sm"
+                    >
+                      <div className="text-center">
+                        <span className="block text-[10px] font-mono font-bold text-blue-600 tracking-tighter uppercase leading-none">Status</span>
+                        <span className="text-xs font-bold uppercase tracking-widest text-slate-900">Elite</span>
+                      </div>
+                    </motion.div>
+                  </div>
+
+                  <div className="lg:col-span-6 flex flex-col pt-4">
+                    <motion.div variants={itemVariants} className="mb-6">
+                      <span className="text-blue-600 font-mono text-xs font-bold uppercase tracking-[0.3em] block mb-4">
+                        [{servicePillars[activeSlide].impact}]
+                      </span>
+                      <h3 className="text-5xl md:text-6xl font-medium tracking-tighter leading-[0.95] mb-8 text-slate-900">
+                        {servicePillars[activeSlide].tagline}
+                      </h3>
+                      <p className="text-xl text-slate-500 leading-relaxed mb-12 font-normal border-l-2 border-slate-100 pl-8">
+                        {servicePillars[activeSlide].description}
+                      </p>
+                    </motion.div>
+
+                    <div className="space-y-4">
+                      {servicePillars[activeSlide].services.map((service, idx) => (
+                        <motion.div 
+                          key={idx}
+                          variants={itemVariants}
+                          custom={idx}
+                          className="group/item flex gap-6 p-6 transition-all duration-300 hover:bg-slate-50 border border-transparent hover:border-slate-100"
+                        >
+                          <div className="flex-shrink-0 mt-1">
+                            <PlusCircle size={20} className="text-slate-300 group-hover/item:text-blue-600 group-hover/item:rotate-90 transition-all duration-500" />
+                          </div>
+                          <div>
+                            <h4 className="font-bold text-xl mb-2 text-slate-900">{service.name}</h4>
+                            <p className="text-base text-slate-400 leading-relaxed max-w-lg">{service.detail}</p>
+                          </div>
+                        </motion.div>
+                      ))}
+                    </div>
+
+                    <motion.div variants={itemVariants} className="mt-12 pt-8 border-t border-slate-100">
+                      <button className="flex items-center gap-4 group cursor-pointer">
+                        <div className="w-12 h-12 rounded-full border border-slate-200 flex items-center justify-center group-hover:bg-blue-600 group-hover:border-blue-600 transition-all duration-500">
+                          <ArrowUpRight size={20} className="text-slate-900 group-hover:text-white transition-colors" />
+                        </div>
+                        <div>
+                          <span className="block text-sm font-bold text-slate-900 uppercase tracking-widest group-hover:text-blue-600 transition-colors">Request a Deep Dive</span>
+                          <span className="text-[11px] font-mono text-slate-400 uppercase tracking-wider font-bold">Speak with our {servicePillars[activeSlide].title} leads</span>
+                        </div>
+                      </button>
+                    </motion.div>
+                  </div>
+                </motion.div>
+              </AnimatePresence>
+            </div>
+          </div>
+        </section>
+
+        {/* ── TEXT RIGHT / IMAGE LEFT ── */}
+        <section className="relative py-32 md:py-48 bg-slate-50 overflow-visible">
+          <div className="absolute top-0 right-0 w-1/3 h-full bg-white/50 pointer-events-none hidden lg:block" />
+          
+          <div className="container px-6 mx-auto">
+            <div className="relative grid lg:grid-cols-12 gap-16 lg:gap-8 items-start">
+              
+              <div className="lg:col-span-6 relative group">
+                <div className="relative overflow-visible">
+                  <motion.div
+                    initial={{ opacity: 0, clipPath: "inset(100% 0% 0% 0%)" }}
+                    whileInView={{ opacity: 1, clipPath: "inset(0% 0% 0% 0%)" }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
+                    className="relative z-10 aspect-[4/5] shadow-3xl overflow-hidden"
+                  >
+                    <motion.img
+                      initial={{ scale: 1.1 }}
+                      whileInView={{ scale: 1 }}
+                      transition={{ duration: 1.5 }}
+                      src="https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&q=80&w=1200"
+                      alt="Engineering Process"
+                      className="w-full h-full object-cover"
+                    />
+                  </motion.div>
+
+                  <motion.div 
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.5, duration: 1 }}
+                    className="absolute -top-10 -left-10 w-40 h-40 bg-blue-50 -z-10 hidden md:block"
+                  />
+
+                  <motion.div
+                    initial={{ opacity: 0, y: 40, x: 20 }}
+                    whileInView={{ opacity: 1, y: 0, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.6, duration: 0.8, ease: "easeOut" }}
+                    className="absolute -bottom-12 -right-6 md:-right-12 z-20 w-72 bg-white p-10 shadow-[20px_20px_60px_rgba(0,0,0,0.08)] border-l-4 border-blue-600"
+                  >
+                    <div className="flex flex-col gap-4">
+                      <div className="flex gap-1">
+                        {[1, 2, 3, 4, 5].map((s) => (
+                          <div key={s} className="w-1 h-1 bg-blue-600 rounded-full" />
+                        ))}
+                      </div>
+                      <p className="text-base font-medium leading-relaxed text-slate-900 tracking-tight italic">
+                        "We work as an integrated unit within your team, not an isolated vendor."
+                      </p>
+                      <span className="text-[10px] font-mono uppercase tracking-widest text-slate-400 font-bold">
+                        Partnership Principle
+                      </span>
+                    </div>
+                  </motion.div>
+                </div>
+              </div>
+
+              <div className="lg:col-span-5 lg:offset-1 flex flex-col pt-8 lg:pt-20">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8 }}
+                >
+                  <div className="flex items-center gap-3 mb-8">
+                    <span className="w-10 h-px bg-blue-600" />
+                    <span className="text-[10px] font-mono uppercase tracking-[0.4em] font-bold text-slate-400">
+                      The Advantage
+                    </span>
+                  </div>
+
+                  <h2 className="text-5xl md:text-7xl font-medium tracking-tighter leading-[0.95] mb-10 text-slate-900">
+                    Engineering clarity <br />
+                    <span className="text-blue-600 italic font-light">for high-growth</span> teams.
+                  </h2>
+
+                  <p className="text-xl text-slate-500 leading-relaxed mb-16 max-w-lg font-normal">
+                    Generic agencies optimize for billable hours. We optimize for system health and engineering velocity. Our goal is to leave your codebase and your team in a better position than we found them.
                   </p>
                 </motion.div>
 
-                {/* Staggered Service Items */}
-                <div className="space-y-4">
-                  {servicePillars[activeSlide].services.map((service, idx) => (
-                    <motion.div 
-                      key={idx}
-                      variants={itemVariants}
-                      custom={idx}
-                      className="group/item flex gap-6 p-6 transition-all duration-300 hover:bg-slate-50 border border-transparent hover:border-slate-100"
+                <div className="space-y-10 relative">
+                  <div className="absolute left-6 top-2 bottom-2 w-px bg-slate-100 hidden md:block" />
+
+                  {trustPoints.map((item, i) => (
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0, x: 20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: i * 0.2 + 0.4, duration: 0.6 }}
+                      className="relative flex gap-8 group"
                     >
-                      <div className="flex-shrink-0 mt-1">
-                        <PlusCircle size={20} className="text-slate-300 group-hover/item:text-blue-600 group-hover/item:rotate-90 transition-all duration-500" />
+                      <div className="relative flex-shrink-0 w-12 h-12 bg-white flex items-center justify-center text-blue-600 shadow-sm border border-slate-100 transition-colors group-hover:bg-blue-600 group-hover:text-white group-hover:border-blue-600 duration-500">
+                        <CheckCircle2 size={20} />
                       </div>
-                      <div>
-                        <h4 className="font-bold text-xl mb-2 text-slate-900">{service.name}</h4>
-                        <p className="text-base text-slate-400 leading-relaxed max-w-lg">
-                          {service.detail}
+                      <div className="flex flex-col gap-2">
+                        <h4 className="text-xl font-bold tracking-tight text-slate-900">{item.title}</h4>
+                        <p className="text-slate-500 text-base leading-relaxed max-w-sm opacity-80 group-hover:opacity-100 transition-opacity duration-500">
+                          {item.desc}
                         </p>
                       </div>
                     </motion.div>
                   ))}
                 </div>
-
-                {/* Call to Trust */}
-                <motion.div variants={itemVariants} className="mt-12 pt-8 border-t border-slate-100">
-                  <button className="flex items-center gap-4 group cursor-pointer">
-                    <div className="w-12 h-12 rounded-full border border-slate-200 flex items-center justify-center group-hover:bg-blue-600 group-hover:border-blue-600 transition-all duration-500">
-                       <ArrowUpRight size={20} className="text-slate-900 group-hover:text-white transition-colors" />
-                    </div>
-                    <div>
-                      <span className="block text-sm font-bold text-slate-900 uppercase tracking-widest group-hover:text-blue-600 transition-colors">Request a Deep Dive</span>
-                      <span className="text-[11px] font-mono text-slate-400 uppercase tracking-wider font-bold">Speak with our {servicePillars[activeSlide].title} leads</span>
-                    </div>
-                  </button>
-                </motion.div>
               </div>
-            </motion.div>
-          </AnimatePresence>
-        </div>
-      </div>
-    </section>
-
-        {/* ── 10. VISUAL RHYTHM: TEXT RIGHT / IMAGE LEFT ── */}
-       <section className="relative py-32 md:py-48 bg-slate-50 overflow-visible">
-      {/* Background Decorative Element - Breaking the Box */}
-      <div className="absolute top-0 right-0 w-1/3 h-full bg-white/50 pointer-events-none hidden lg:block" />
-      
-      <div className="container px-6 mx-auto">
-        <div className="relative grid lg:grid-cols-12 gap-16 lg:gap-8 items-start">
-          
-          {/* IMAGE SIDE: Layered Editorial Composition */}
-          <div className="lg:col-span-6 relative group">
-            <div className="relative overflow-visible">
-              {/* Primary Image with Fluid Reveal */}
-              <motion.div
-                initial={{ opacity: 0, clipPath: "inset(100% 0% 0% 0%)" }}
-                whileInView={{ opacity: 1, clipPath: "inset(0% 0% 0% 0%)" }}
-                viewport={{ once: true }}
-                transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-                className="relative z-10 aspect-[4/5] shadow-3xl overflow-hidden"
-              >
-                <motion.img
-                  initial={{ scale: 1.1 }}
-                  whileInView={{ scale: 1 }}
-                  transition={{ duration: 1.5 }}
-                  src="https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&q=80&w=1200"
-                  alt="Engineering Process"
-                  className="w-full h-full object-cover"
-                />
-              </motion.div>
-
-              {/* Decorative Geometric Background - Softens the Rectangle */}
-              <motion.div 
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.5, duration: 1 }}
-                className="absolute -top-10 -left-10 w-40 h-40 bg-blue-50 -z-10 hidden md:block"
-              />
-
-              {/* FLOATING TRUST NOTE: Integrated Overlay */}
-              <motion.div
-                initial={{ opacity: 0, y: 40, x: 20 }}
-                whileInView={{ opacity: 1, y: 0, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.6, duration: 0.8, ease: "easeOut" }}
-                className="absolute -bottom-12 -right-6 md:-right-12 z-20 w-72 bg-white p-10 shadow-[20px_20px_60px_rgba(0,0,0,0.08)] border-l-4 border-blue-600"
-              >
-                <div className="flex flex-col gap-4">
-                  <div className="flex gap-1">
-                    {[1, 2, 3, 4, 5].map((s) => (
-                      <div key={s} className="w-1 h-1 bg-blue-600 rounded-full" />
-                    ))}
-                  </div>
-                  <p className="text-base font-medium leading-relaxed text-slate-900 tracking-tight italic">
-                    "We work as an integrated unit within your team, not an isolated vendor."
-                  </p>
-                  <span className="text-[10px] font-mono uppercase tracking-widest text-slate-400 font-bold">
-                    Partnership Principle
-                  </span>
-                </div>
-              </motion.div>
             </div>
           </div>
+        </section>
 
-          {/* TEXT SIDE: Staged Hierarchy & Rhythm */}
-          <div className="lg:col-span-5 lg:offset-1 flex flex-col pt-8 lg:pt-20">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-            >
-              <div className="flex items-center gap-3 mb-8">
-                <span className="w-10 h-px bg-blue-600" />
-                <span className="text-[10px] font-mono uppercase tracking-[0.4em] font-bold text-slate-400">
-                  The Advantage
-                </span>
-              </div>
-
-              <h2 className="text-5xl md:text-7xl font-medium tracking-tighter leading-[0.95] mb-10 text-slate-900">
-                Engineering clarity <br />
-                <span className="text-blue-600 italic font-light">for high-growth</span> teams.
-              </h2>
-
-              <p className="text-xl text-slate-500 leading-relaxed mb-16 max-w-lg font-normal">
-                Generic agencies optimize for billable hours. We optimize for system health and engineering velocity. Our goal is to leave your codebase and your team in a better position than we found them.
-              </p>
-            </motion.div>
-
-            {/* TRUST POINTS: Premium Editorial Treatment */}
-            <div className="space-y-10 relative">
-              {/* Vertical Connector Line for Rhythm */}
-              <div className="absolute left-6 top-2 bottom-2 w-px bg-slate-100 hidden md:block" />
-
-              {trustPoints.map((item, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, x: 20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.2 + 0.4, duration: 0.6 }}
-                  className="relative flex gap-8 group"
-                >
-                  <div className="relative flex-shrink-0 w-12 h-12 bg-white flex items-center justify-center text-blue-600 shadow-sm border border-slate-100 transition-colors group-hover:bg-blue-600 group-hover:text-white group-hover:border-blue-600 duration-500">
-                    <CheckCircle2 size={20} />
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    <h4 className="text-xl font-bold tracking-tight text-slate-900">
-                      {item.title}
-                    </h4>
-                    <p className="text-slate-500 text-base leading-relaxed max-w-sm opacity-80 group-hover:opacity-100 transition-opacity duration-500">
-                      {item.desc}
-                    </p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </section>
-
-        {/* ── 5. FULL-WIDTH VISUAL MOMENT ── */}
+        {/* ── FULL-WIDTH IMAGE MOMENT ── */}
         <section className="h-[70vh] relative overflow-hidden group">
           <img 
             src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=2500" 
@@ -495,7 +481,7 @@ export default function ServicesPage() {
           </div>
         </section>
 
-        {/* ── PROCESS: DESCRIPTIVE & VISUAL ── */}
+        {/* ── PROCESS ── */}
         <section className="py-40 bg-white">
           <div className="container px-6 mx-auto">
             <div className="text-center max-w-3xl mx-auto mb-24">
@@ -505,24 +491,9 @@ export default function ServicesPage() {
             
             <div className="grid md:grid-cols-3 gap-12">
               {[
-                { 
-                  step: "01", 
-                  title: "Technical Discovery", 
-                  desc: "We begin with an exhaustive audit of your current stack, team structure, and commercial goals to identify immediate bottlenecks.",
-                  icon: Compass 
-                },
-                { 
-                  step: "02", 
-                  title: "Focused Execution", 
-                  desc: "Our engineers embed with your team, implementing high-integrity code while establishing better standards and practices.",
-                  icon: Zap 
-                },
-                { 
-                  step: "03", 
-                  title: "Handover & Scale", 
-                  desc: "We ensure your team is fully equipped to maintain and scale the system, providing long-term strategic oversight as needed.",
-                  icon: ShieldCheck 
-                },
+                { step: "01", title: "Technical Discovery", desc: "We begin with an exhaustive audit of your current stack, team structure, and commercial goals to identify immediate bottlenecks.", icon: Compass },
+                { step: "02", title: "Focused Execution", desc: "Our engineers embed with your team, implementing high-integrity code while establishing better standards and practices.", icon: Zap },
+                { step: "03", title: "Handover & Scale", desc: "We ensure your team is fully equipped to maintain and scale the system, providing long-term strategic oversight as needed.", icon: ShieldCheck },
               ].map((item, i) => (
                 <div key={i} className="group p-10 border border-slate-100 hover:border-blue-200 transition-all hover:shadow-2xl hover:shadow-blue-50">
                   <div className="flex items-center gap-4 mb-10">
@@ -538,7 +509,7 @@ export default function ServicesPage() {
           </div>
         </section>
 
-        {/* ── 11. REFINED CTA SECTION ── */}
+        {/* ── CTA ── */}
         <section className="py-40 bg-slate-900 text-white relative overflow-hidden">
           <div className="absolute top-0 left-0 w-full h-full opacity-20 pointer-events-none">
             <img 
@@ -559,7 +530,7 @@ export default function ServicesPage() {
                 Ready to stabilize <br />your <span className="text-blue-500 italic">vision?</span>
               </h2>
               <p className="text-xl md:text-2xl text-slate-400 leading-relaxed max-w-2xl mx-auto mb-16 font-normal">
-                If you are facing a critical technical challenge or planning a major architectural shift, let’s discuss the strategy. We speak engineer, not sales.
+                If you are facing a critical technical challenge or planning a major architectural shift, let's discuss the strategy. We speak engineer, not sales.
               </p>
               
               <div className="flex flex-col md:flex-row items-center justify-center gap-6">
@@ -575,22 +546,8 @@ export default function ServicesPage() {
           </div>
         </section>
 
-        {/* ── FOOTER SUB-NAV ── */}
-        <footer className="py-12 bg-white border-t border-slate-100">
-          <div className="container px-6 mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
-            <div className="flex items-center gap-3">
-               <div className="w-2 h-2 rounded-full bg-blue-600" />
-               <span className="text-[10px] font-mono text-slate-400 uppercase tracking-widest font-bold">DeusX Engineering // High Integrity Foundations</span>
-            </div>
-            <div className="flex gap-10">
-              {["Product", "Strategy", "Security", "About"].map(item => (
-                <span key={item} className="text-[10px] font-mono text-slate-300 uppercase tracking-widest hover:text-blue-600 cursor-pointer transition-all">
-                  {item}
-                </span>
-              ))}
-            </div>
-          </div>
-        </footer>
+        {/* ── FOOTER ── */}
+        <Footer />
       </main>
     </div>
   );
