@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import Navbar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
+import Link from "next/link";
 
 // ─── TYPES & DATA ──────────────────────────────────────────────────────────
 
@@ -159,12 +160,14 @@ const ProjectSection = ({ project, index }: { project: Project; index: number })
               ))}
             </div>
 
-            <button className={`flex items-center gap-4 group ${!isEven && "ml-auto"}`}>
-               <span className="text-sm font-bold uppercase tracking-widest group-hover:text-blue-600 transition-colors">Analyze Architecture</span>
-               <div className="w-12 h-12 bg-slate-900 text-white flex items-center justify-center group-hover:bg-blue-600 transition-all duration-500">
-                  <ArrowUpRight size={20} />
-               </div>
-            </button>
+           <Link href={`/projects/${project.id}`} className="group flex items-center gap-4">
+  <span className="text-xs font-bold uppercase tracking-widest text-slate-900 group-hover:text-blue-600 transition-colors">
+    View Architecture
+  </span>
+  <div className="relative w-12 h-12 bg-slate-900 flex items-center justify-center transition-all duration-500 group-hover:bg-blue-600 group-hover:rounded-full">
+    <ArrowUpRight size={20} className="text-white" />
+  </div>
+</Link>
           </motion.div>
         </div>
       </div>
