@@ -26,6 +26,7 @@ import {
 
 import Navbar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
+import Link from "next/link";
 
 // ─── DATA ──────────────────────────────────────────────────────────
 
@@ -231,10 +232,12 @@ export default function ServicesPage() {
                 transition={{delay: 0.4}}
                 className="flex flex-wrap items-center gap-6"
               >
+              <Link href="contact">
                 <button className="bg-slate-900 text-white px-10 py-5 text-sm font-bold hover:bg-blue-600 transition-all active:scale-95 flex items-center gap-4 shadow-xl shadow-slate-200">
                   Initialize Consultation
                   <MoveRight size={18} />
                 </button>
+              </Link>
                 <div className="flex items-center gap-4 px-4 border-l border-slate-200">
                   <span className="text-[11px] font-mono uppercase tracking-wider text-slate-400">
                     Trusted by Global Teams
@@ -602,7 +605,7 @@ export default function ServicesPage() {
           </div>
         </section>
         {/* ── PROCESS ── */}
-        ── PROCESS: DESCRIPTIVE & VISUAL ──
+       
         <section className="py-40 bg-white">
           <div className="container px-6 mx-auto">
             <div className="text-center max-w-3xl mx-auto mb-24">

@@ -113,7 +113,7 @@ const ProjectSection = ({ project, index }: { project: Project; index: number })
             {/* Tech Overlay Badge */}
             <div className="absolute top-8 right-8 mix-blend-difference">
                <span className="text-[10px] font-mono text-white uppercase tracking-[0.5em] font-bold">
-                 REF_{project.id} // STABLE
+                 REF_{project.id} 
                </span>
             </div>
           </div>
@@ -244,10 +244,10 @@ export default function ProjectsPage() {
                 </div>
                 <h2 className="text-5xl md:text-7xl font-medium tracking-tight mb-12 leading-[1.1]">
                   Systems we engineer <br />
-                  <span className="text-blue-500 italic font-light">don't just run.</span>
+                  <span className="text-blue-500 italic font-light">dont just run.</span>
                 </h2>
                 <p className="text-xl text-slate-400 leading-relaxed max-w-xl">
-                  We don't optimize for vanity metrics. We optimize for the edge cases where legacy systems fail.
+                  We dont optimize for vanity metrics. We optimize for the edge cases where legacy systems fail.
                 </p>
               </div>
 
@@ -284,7 +284,7 @@ export default function ProjectsPage() {
                 <Layers className="text-blue-600" size={48} />
               </div>
               <h2 className="text-5xl md:text-8xl font-medium tracking-tighter mb-10 leading-[0.95]">
-                We don't take on many builds. <br />
+                We dont take on many builds. <br />
                 But we build for <span className="text-blue-600 italic">scale.</span>
               </h2>
               <p className="text-xl md:text-2xl text-slate-400 mb-16 max-w-2xl mx-auto font-normal">

@@ -23,106 +23,6 @@ import Link from "next/link";
 
 // ─── VISUAL COMPONENTS ──────────────────────────────────────────────────────
 
-const SystemMapHero = () => (
-  <div className="relative w-full h-full min-h-[500px] flex items-center justify-center pointer-events-none select-none">
-    <svg
-      width="100%"
-      height="100%"
-      viewBox="0 0 600 600"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className="opacity-90"
-    >
-      {/* Structural Rings */}
-      <circle cx="300" cy="300" r="120" stroke="#E2E8F0" strokeWidth="2.5" />
-      <circle cx="300" cy="300" r="220" stroke="#F1F5F9" strokeWidth="3.5" />
-      <circle cx="300" cy="300" r="320" stroke="#E2E8F0" strokeWidth="4.5" />
-
-      {/* Animated Path 01 */}
-      <motion.circle
-        cx="300"
-        cy="300"
-        r="120"
-        stroke="#2563EB"
-        strokeWidth="1"
-        strokeDasharray="20 180"
-        animate={{rotate: 360}}
-        transition={{duration: 15, repeat: Infinity, ease: "linear"}}
-      />
-
-      <motion.circle
-        cx="300"
-        cy="300"
-        r="220"
-        stroke="#2563EB"
-        strokeWidth="1"
-        strokeDasharray="20 340"
-        animate={{rotate: 360}}
-        transition={{duration: 40, repeat: Infinity, ease: "linear"}}
-      />
-
-      <motion.circle
-        cx="300"
-        cy="300"
-        r="320"
-        stroke="#2563EB"
-        strokeWidth="1"
-        strokeDasharray="20 340"
-        animate={{rotate: 360}}
-        transition={{duration: 40, repeat: Infinity, ease: "linear"}}
-      />
-
-      {/* Pulsing Nodes */}
-      {[
-        {x: 300, y: 180, delay: 0},
-        {x: 404, y: 360, delay: 0.5},
-        {x: 196, y: 360, delay: 1},
-      ].map((node, i) => (
-        <g key={i}>
-          <circle cx={node.x} cy={node.y} r="3" fill="#2563EB" />
-          <motion.circle
-            cx={node.x}
-            cy={node.y}
-            r="8"
-            stroke="#2563EB"
-            strokeWidth="0.5"
-            animate={{scale: [1, 2, 1], opacity: [0.5, 0, 0.5]}}
-            transition={{duration: 3, repeat: Infinity, delay: node.delay}}
-          />
-        </g>
-      ))}
-
-      {/* Connection Lines */}
-      <motion.path
-        d="M300 180 L404 360 L196 360 Z"
-        stroke="#CBD5E1"
-        strokeWidth="0.5"
-        animate={{opacity: [0.2, 0.5, 0.2]}}
-        transition={{duration: 5, repeat: Infinity}}
-      />
-    </svg>
-
-    {/* Data Floating Text */}
-    <div className="absolute inset-0 font-mono text-[9px] text-slate-400">
-      <motion.div
-        animate={{y: [0, -40], opacity: [0, 1, 0]}}
-        transition={{duration: 5, repeat: Infinity}}
-        className="absolute top-[40%] left-[20%] text-blue-600 font-bold"
-      >
-       {/* SYST_READY_V2 */}
-      </motion.div>
-      <motion.div
-        animate={{y: [0, -30], opacity: [0, 1, 0]}}
-        transition={{duration: 7, repeat: Infinity, delay: 1}}
-        className="absolute top-[60%] right-[15%]"
-      >
-        LOAD_BAL: ACTIVE
-      </motion.div>
-    </div>
-  </div>
-);
-
-
 // ─── DATA ────────────────────────────────────────────────────────────────────
 
 const capabilities = [
@@ -407,6 +307,29 @@ export default function HomePage() {
     </div>
   );
 
+  const sectionRef = useRef(null);
+  const isInView = useInView(sectionRef, {once: true, margin: "-100px"});
+  const fullText = "SYSTEM_ARCHITECTURE_V3_DEBUG_MODE_STABLE";
+  const [displayedText, setDisplayedText] = useState("");
+
+  useEffect(() => {
+    if (!isInView) return;
+
+    let i = 0;
+    setDisplayedText("");
+
+    const interval = setInterval(() => {
+      if (i < fullText.length) {
+        setDisplayedText(fullText.slice(0, i + 1));
+        i++;
+      } else {
+        clearInterval(interval);
+      }
+    }, 155); // adjust speed here — lower = faster
+
+    return () => clearInterval(interval);
+  }, [isInView]);
+
   return (
     <main className="bg-white selection:bg-blue-600 selection:text-white antialiased">
       {/* ══════════════════════════════════════════════════════════════════════
@@ -453,9 +376,9 @@ export default function HomePage() {
             </motion.p>
 
             <div className="flex flex-wrap gap-5">
-              <Link href="/contact us">
+              <Link href="/services">
                 <button className="bg-slate-900 text-white px-10 py-5 text-base font-bold hover:bg-blue-600 transition-all flex items-center gap-3 active:scale-95 shadow-xl shadow-slate-200">
-                  Contact Us
+                  Our Services
                   <ArrowUpRight size={18} />
                 </button>
               </Link>
@@ -468,32 +391,32 @@ export default function HomePage() {
           </div>
 
           <div className="flex lg:col-span-5 lg:block h-full overflow-hidden">
-  <div className="hidden lg:block relative h-full min-h-[680px] overflow-hidden">
-    <div className="absolute inset-0 pointer-events-none">
-      {/* Large radial background */}
-      <div className="absolute right-0 top-[50%] h-[760px] w-[760px] -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(56,96,193,0.30)_0%,rgba(56,96,193,0.18)_28%,rgba(56,96,193,0.10)_48%,rgba(56,96,193,0.04)_64%,transparent_76%)] blur-3xl" />
+            <div className="hidden lg:block relative h-full min-h-[680px] overflow-hidden">
+              <div className="absolute inset-0 pointer-events-none">
+                {/* Large radial background */}
+                <div className="absolute right-0 top-[10%] h-[760px] w-[680px] -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(56,96,193,0.30)_0%,rgba(56,96,193,0.18)_28%,rgba(56,96,193,0.10)_48%,rgba(56,96,193,0.04)_64%,transparent_76%)] blur-3xl" />
 
-      {/* Linear gradient overlay */}
-      <div className="absolute inset-0 bg-[linear-gradient(125deg,transparent_38%,rgba(56,96,193,0.10)_58%,rgba(96,165,250,0.12)_68%,transparent_84%)]" />
+                {/* Linear gradient overlay */}
+                <div className="absolute inset-0 bg-[linear-gradient(125deg,transparent_38%,rgba(56,96,193,0.10)_58%,rgba(96,165,250,0.12)_68%,transparent_84%)]" />
 
-      {/* Smaller radial */}
-      <div className="absolute right-[2%] top-[10%] h-[320px] w-[320px] rounded-full bg-[radial-gradient(circle,rgba(96,165,250,0.16)_0%,rgba(96,165,250,0.07)_40%,transparent_74%)] blur-2xl" />
+                {/* Smaller radial */}
+                <div className="absolute right-[2%] top-[10%] h-[320px] w-[320px] rounded-full bg-[radial-gradient(circle,rgba(96,165,250,0.16)_0%,rgba(96,165,250,0.07)_40%,transparent_74%)] blur-2xl" />
 
-      {/* Left gradient overlay */}
-      <div className="absolute inset-y-0 left-0 w-[42%] bg-gradient-to-r from-white via-white/65 to-transparent" />
+                {/* Left gradient overlay */}
+                <div className="absolute inset-y-0 left-0 w-[42%] bg-gradient-to-r from-white via-white/65 to-transparent" />
 
-      {/* Bottom-right radial */}
-      <div className="absolute bottom-[-10%] right-[-6%] h-[240px] w-[520px] bg-[radial-gradient(circle,rgba(56,96,193,0.12)_0%,transparent_72%)] blur-2xl" />
-    </div>
+                {/* Bottom-right radial */}
+                <div className="absolute bottom-[-10%] right-[-6%] h-[240px] w-[520px] bg-[radial-gradient(circle,rgba(56,96,193,0.12)_0%,transparent_72%)] blur-2xl" />
+              </div>
 
-    {/* SystemMapHero SVG */}
-    <div className="absolute inset-y-0 right-0 w-full flex items-center justify-center">
-      <div className="relative h-[700px] md:h-[750px] max-w-[750px] w-full mx-auto">
-        <SystemMapHero />
-      </div>
-    </div>
-  </div>
-</div>
+              {/* SystemMapHero SVG */}
+              <div className="absolute inset-y-0 right-0 w-full flex items-center justify-center">
+                <div className="relative h-[700px] md:h-[750px] max-w-[750px] w-full mx-auto">
+                  <SystemMapHero />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Hero Footer: Credibility Strip */}
@@ -698,25 +621,24 @@ export default function HomePage() {
       <section className="py-32 bg-white">
         <div className="container mx-auto px-6">
           <SectionLabel text="The DeusX Way" />
-{/* ══════════════════════════════════════════════════════════════════════
+          {/* ══════════════════════════════════════════════════════════════════════
     THE DEUSX WAY
 ══════════════════════════════════════════════════════════════════════ */}
 
-    
-    <h2 className="text-5xl md:text-6xl font-medium tracking-tighter leading-tight mb-4 text-slate-900">
-      From Idea to Launch
-    </h2>
-    <p className="text-xl text-slate-500 mb-20 max-w-xl leading-relaxed">
-      A proven process that turns your vision into a fully delivered,
-      production-ready product.
-    </p>
+          <h2 className="text-5xl md:text-6xl font-medium tracking-tighter leading-tight mb-4 text-slate-900">
+            From Idea to Launch
+          </h2>
+          <p className="text-xl text-slate-500 mb-20 max-w-xl leading-relaxed">
+            A proven process that turns your vision into a fully delivered,
+            production-ready product.
+          </p>
 
-    {/* ── Desktop ── */}
-    <div
-      className="hidden lg:block relative max-w-[680px] mx-auto"
-      style={{ minHeight: "1060px" }}
-    >
-      {/*
+          {/* ── Desktop ── */}
+          <div
+            className="hidden lg:block relative max-w-[680px] mx-auto"
+            style={{minHeight: "1060px"}}
+          >
+            {/*
         M 100 80     → Card 01 pin (top-left)
         L 540 160    → slight slant right to Card 02 pin (top-right)
         C 720 160    → control: pull curve out to the RIGHT
@@ -724,201 +646,200 @@ export default function HomePage() {
           100 520    → land back left at Card 03 pin (mid-left)
         L 540 800    → slant down-right to Card 04 pin (bottom-right)
       */}
-      <svg
-        className="absolute inset-0 w-full h-full pointer-events-none z-0"
-        viewBox="0 0 680 1060"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="
+            <svg
+              className="absolute inset-0 w-full h-full pointer-events-none z-0"
+              viewBox="0 0 680 1060"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="
             M 100 80
             L 540 160
             C 720 160 720 520 100 520
             L 540 800
           "
-          fill="none"
-          stroke="#c0c0ba"
-          strokeWidth="2.5"
-          strokeDasharray="10 10"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
+                fill="none"
+                stroke="#c0c0ba"
+                strokeWidth="2.5"
+                strokeDasharray="10 10"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
 
-      {/* Card 01 — top LEFT */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.45 }}
-        className="absolute top-[66px] left-0 w-[290px] z-10"
-        style={{ rotate: "-6deg" }}
-      >
-        <div className="bg-white rounded-[18px] border border-slate-200 shadow-[0_6px_30px_rgba(0,0,0,0.08)] p-4 relative">
-          <div className="absolute -top-[9px] left-1/2 -translate-x-1/2 w-[18px] h-[18px] rounded-full bg-slate-500 shadow-[0_2px_6px_rgba(0,0,0,0.25)] border-[3px] border-slate-300 z-10" />
-          <span className="text-[10px] font-mono font-bold text-slate-300 tracking-[0.3em] uppercase block mb-3 px-3 pt-2">
-            01
-          </span>
-          <div className="bg-[#efefed] rounded-[12px] p-5">
-            <h3 className="text-xl font-bold text-slate-900 mb-2 tracking-tight">
-              Define
-            </h3>
-            <p className="text-sm text-slate-500 leading-relaxed">
-              We dig deep into your goals, constraints and vision to map out
-              a precise technical strategy before a single line of code is
-              written.
+            {/* Card 01 — top LEFT */}
+            <motion.div
+              initial={{opacity: 0, y: 20}}
+              whileInView={{opacity: 1, y: 0}}
+              viewport={{once: true}}
+              transition={{duration: 0.45}}
+              className="absolute top-[66px] left-0 w-[290px] z-10"
+              style={{rotate: "-6deg"}}
+            >
+              <div className="bg-white rounded-[18px] border border-slate-200 shadow-[0_6px_30px_rgba(0,0,0,0.08)] p-4 relative">
+                <div className="absolute -top-[9px] left-1/2 -translate-x-1/2 w-[18px] h-[18px] rounded-full bg-slate-500 shadow-[0_2px_6px_rgba(0,0,0,0.25)] border-[3px] border-slate-300 z-10" />
+                <span className="text-[10px] font-mono font-bold text-slate-300 tracking-[0.3em] uppercase block mb-3 px-3 pt-2">
+                  01
+                </span>
+                <div className="bg-[#efefed] rounded-[12px] p-5">
+                  <h3 className="text-xl font-bold text-slate-900 mb-2 tracking-tight">
+                    Define
+                  </h3>
+                  <p className="text-sm text-slate-500 leading-relaxed">
+                    We start with consultation to deeply understand your goals,
+                    constraints and vision to help you with a precise technical
+                    direction before any we start our work
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Card 02 — top RIGHT */}
+            <motion.div
+              initial={{opacity: 0, y: 20}}
+              whileInView={{opacity: 1, y: 0}}
+              viewport={{once: true}}
+              transition={{duration: 0.45, delay: 0.12}}
+              className="absolute top-[148px] right-0 w-[290px] z-10"
+              style={{rotate: "6deg"}}
+            >
+              <div className="bg-white rounded-[18px] border border-slate-200 shadow-[0_6px_30px_rgba(0,0,0,0.08)] p-4 relative">
+                <div className="absolute -top-[9px] left-1/2 -translate-x-1/2 w-[18px] h-[18px] rounded-full bg-slate-500 shadow-[0_2px_6px_rgba(0,0,0,0.25)] border-[3px] border-slate-300 z-10" />
+                <span className="text-[10px] font-mono font-bold text-slate-300 tracking-[0.3em] uppercase block mb-3 px-3 pt-2">
+                  02
+                </span>
+                <div className="bg-[#efefed] rounded-[12px] p-5">
+                  <h3 className="text-xl font-bold text-slate-900 mb-2 tracking-tight">
+                    Design
+                  </h3>
+                  <p className="text-sm text-slate-500 leading-relaxed">
+                    We continue with a strong and reliable architecture,
+                    intuitive user flows and scalable sysytems built for
+                    clarity, performance and long-term growth.
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Card 03 — mid LEFT */}
+            <motion.div
+              initial={{opacity: 0, y: 20}}
+              whileInView={{opacity: 1, y: 0}}
+              viewport={{once: true}}
+              transition={{duration: 0.45, delay: 0.24}}
+              className="absolute top-[508px] left-0 w-[290px] z-10"
+              style={{rotate: "-6deg"}}
+            >
+              <div className="bg-white rounded-[18px] border border-slate-200 shadow-[0_6px_30px_rgba(0,0,0,0.08)] p-4 relative">
+                <div className="absolute -top-[9px] left-1/2 -translate-x-1/2 w-[18px] h-[18px] rounded-full bg-slate-500 shadow-[0_2px_6px_rgba(0,0,0,0.25)] border-[3px] border-slate-300 z-10" />
+                <span className="text-[10px] font-mono font-bold text-slate-300 tracking-[0.3em] uppercase block mb-3 px-3 pt-2">
+                  03
+                </span>
+                <div className="bg-[#efefed] rounded-[12px] p-5">
+                  <h3 className="text-xl font-bold text-slate-900 mb-2 tracking-tight">
+                    Build
+                  </h3>
+                  <p className="text-sm text-slate-500 leading-relaxed">
+                    High-precision engineering with rigorous code reviews,
+                    automated testing and performance benchmarks at every
+                    milestone.
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Card 04 — bottom RIGHT */}
+            <motion.div
+              initial={{opacity: 0, y: 20}}
+              whileInView={{opacity: 1, y: 0}}
+              viewport={{once: true}}
+              transition={{duration: 0.45, delay: 0.36}}
+              className="absolute top-[788px] right-0 w-[290px] z-10"
+              style={{rotate: "6deg"}}
+            >
+              <div className="bg-white rounded-[18px] border border-slate-200 shadow-[0_6px_30px_rgba(0,0,0,0.08)] p-4 relative">
+                <div className="absolute -top-[9px] left-1/2 -translate-x-1/2 w-[18px] h-[18px] rounded-full bg-slate-500 shadow-[0_2px_6px_rgba(0,0,0,0.25)] border-[3px] border-slate-300 z-10" />
+                <span className="text-[10px] font-mono font-bold text-slate-300 tracking-[0.3em] uppercase block mb-3 px-3 pt-2">
+                  04
+                </span>
+                <div className="bg-[#efefed] rounded-[12px] p-5">
+                  <h3 className="text-xl font-bold text-slate-900 mb-2 tracking-tight">
+                    Launch
+                  </h3>
+                  <p className="text-sm text-slate-500 leading-relaxed">
+                    We handle deployment, monitoring and post-launch support so
+                    your product goes live smoothly and stays that way.
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Ready to be delivered — bottom right, below Card 04 */}
+          </div>
+
+          {/* ── Mobile ── */}
+          <div className="flex flex-col gap-10 lg:hidden relative">
+            <div className="absolute left-[22px] top-4 bottom-4 border-l-2 border-dashed border-slate-300" />
+            {[
+              {
+                num: "01",
+                title: "Define",
+                desc: "We dig deep into your goals, constraints and vision to map out a precise technical strategy before a single line of code is written.",
+                rotate: "-3deg",
+              },
+              {
+                num: "02",
+                title: "Design",
+                desc: "Architecture blueprints, system diagrams and UI flows crafted with scalability and clarity at the core.",
+                rotate: "3deg",
+              },
+              {
+                num: "03",
+                title: "Build",
+                desc: "High-precision engineering with rigorous code reviews, automated testing and benchmarks at every milestone.",
+                rotate: "-3deg",
+              },
+              {
+                num: "04",
+                title: "Launch",
+                desc: "We handle deployment, monitoring and post-launch support so your product goes live smoothly and stays that way.",
+                rotate: "3deg",
+              },
+            ].map((step, i) => (
+              <motion.div
+                key={i}
+                initial={{opacity: 0, x: 16}}
+                whileInView={{opacity: 1, x: 0}}
+                viewport={{once: true}}
+                transition={{duration: 0.4, delay: i * 0.1}}
+                className="ml-12"
+                style={{rotate: step.rotate}}
+              >
+                <div className="bg-white rounded-[18px] border border-slate-200 shadow-[0_4px_20px_rgba(0,0,0,0.07)] p-4 relative">
+                  <div className="absolute -top-[9px] left-1/2 -translate-x-1/2 w-[18px] h-[18px] rounded-full bg-slate-500 shadow-[0_2px_6px_rgba(0,0,0,0.25)] border-[3px] border-slate-300" />
+                  <span className="text-[10px] font-mono font-bold text-slate-300 tracking-[0.3em] uppercase block mb-3 px-3 pt-2">
+                    {step.num}
+                  </span>
+                  <div className="bg-[#efefed] rounded-[12px] p-5">
+                    <h3 className="text-xl font-bold text-slate-900 mb-2 tracking-tight">
+                      {step.title}
+                    </h3>
+                    <p className="text-sm text-slate-500 leading-relaxed">
+                      {step.desc}
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+            <p className="text-slate-400 italic text-sm text-right pr-2 mt-2">
+              ✦ Ready to be delivered!
             </p>
           </div>
-        </div>
-      </motion.div>
-
-      {/* Card 02 — top RIGHT */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.45, delay: 0.12 }}
-        className="absolute top-[148px] right-0 w-[290px] z-10"
-        style={{ rotate: "6deg" }}
-      >
-        <div className="bg-white rounded-[18px] border border-slate-200 shadow-[0_6px_30px_rgba(0,0,0,0.08)] p-4 relative">
-          <div className="absolute -top-[9px] left-1/2 -translate-x-1/2 w-[18px] h-[18px] rounded-full bg-slate-500 shadow-[0_2px_6px_rgba(0,0,0,0.25)] border-[3px] border-slate-300 z-10" />
-          <span className="text-[10px] font-mono font-bold text-slate-300 tracking-[0.3em] uppercase block mb-3 px-3 pt-2">
-            02
-          </span>
-          <div className="bg-[#efefed] rounded-[12px] p-5">
-            <h3 className="text-xl font-bold text-slate-900 mb-2 tracking-tight">
-              Design
-            </h3>
-            <p className="text-sm text-slate-500 leading-relaxed">
-              Architecture blueprints, system diagrams and UI flows crafted
-              with scalability and clarity at the core.
-            </p>
-          </div>
-        </div>
-      </motion.div>
-
-      {/* Card 03 — mid LEFT */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.45, delay: 0.24 }}
-        className="absolute top-[508px] left-0 w-[290px] z-10"
-        style={{ rotate: "-6deg" }}
-      >
-        <div className="bg-white rounded-[18px] border border-slate-200 shadow-[0_6px_30px_rgba(0,0,0,0.08)] p-4 relative">
-          <div className="absolute -top-[9px] left-1/2 -translate-x-1/2 w-[18px] h-[18px] rounded-full bg-slate-500 shadow-[0_2px_6px_rgba(0,0,0,0.25)] border-[3px] border-slate-300 z-10" />
-          <span className="text-[10px] font-mono font-bold text-slate-300 tracking-[0.3em] uppercase block mb-3 px-3 pt-2">
-            03
-          </span>
-          <div className="bg-[#efefed] rounded-[12px] p-5">
-            <h3 className="text-xl font-bold text-slate-900 mb-2 tracking-tight">
-              Build
-            </h3>
-            <p className="text-sm text-slate-500 leading-relaxed">
-              High-precision engineering with rigorous code reviews,
-              automated testing and performance benchmarks at every
-              milestone.
-            </p>
-          </div>
-        </div>
-      </motion.div>
-
-      {/* Card 04 — bottom RIGHT */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.45, delay: 0.36 }}
-        className="absolute top-[788px] right-0 w-[290px] z-10"
-        style={{ rotate: "6deg" }}
-      >
-        <div className="bg-white rounded-[18px] border border-slate-200 shadow-[0_6px_30px_rgba(0,0,0,0.08)] p-4 relative">
-          <div className="absolute -top-[9px] left-1/2 -translate-x-1/2 w-[18px] h-[18px] rounded-full bg-slate-500 shadow-[0_2px_6px_rgba(0,0,0,0.25)] border-[3px] border-slate-300 z-10" />
-          <span className="text-[10px] font-mono font-bold text-slate-300 tracking-[0.3em] uppercase block mb-3 px-3 pt-2">
-            04
-          </span>
-          <div className="bg-[#efefed] rounded-[12px] p-5">
-            <h3 className="text-xl font-bold text-slate-900 mb-2 tracking-tight">
-              Launch
-            </h3>
-            <p className="text-sm text-slate-500 leading-relaxed">
-              We handle deployment, monitoring and post-launch support so
-              your product goes live smoothly and stays that way.
-            </p>
-          </div>
-        </div>
-      </motion.div>
-
-      {/* Ready to be delivered — bottom right, below Card 04 */}
-     
-    </div>
-
-    {/* ── Mobile ── */}
-    <div className="flex flex-col gap-10 lg:hidden relative">
-      <div className="absolute left-[22px] top-4 bottom-4 border-l-2 border-dashed border-slate-300" />
-      {[
-        {
-          num: "01",
-          title: "Define",
-          desc: "We dig deep into your goals, constraints and vision to map out a precise technical strategy before a single line of code is written.",
-          rotate: "-3deg",
-        },
-        {
-          num: "02",
-          title: "Design",
-          desc: "Architecture blueprints, system diagrams and UI flows crafted with scalability and clarity at the core.",
-          rotate: "3deg",
-        },
-        {
-          num: "03",
-          title: "Build",
-          desc: "High-precision engineering with rigorous code reviews, automated testing and benchmarks at every milestone.",
-          rotate: "-3deg",
-        },
-        {
-          num: "04",
-          title: "Launch",
-          desc: "We handle deployment, monitoring and post-launch support so your product goes live smoothly and stays that way.",
-          rotate: "3deg",
-        },
-      ].map((step, i) => (
-        <motion.div
-          key={i}
-          initial={{ opacity: 0, x: 16 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.4, delay: i * 0.1 }}
-          className="ml-12"
-          style={{ rotate: step.rotate }}
-        >
-          <div className="bg-white rounded-[18px] border border-slate-200 shadow-[0_4px_20px_rgba(0,0,0,0.07)] p-4 relative">
-            <div className="absolute -top-[9px] left-1/2 -translate-x-1/2 w-[18px] h-[18px] rounded-full bg-slate-500 shadow-[0_2px_6px_rgba(0,0,0,0.25)] border-[3px] border-slate-300" />
-            <span className="text-[10px] font-mono font-bold text-slate-300 tracking-[0.3em] uppercase block mb-3 px-3 pt-2">
-              {step.num}
-            </span>
-            <div className="bg-[#efefed] rounded-[12px] p-5">
-              <h3 className="text-xl font-bold text-slate-900 mb-2 tracking-tight">
-                {step.title}
-              </h3>
-              <p className="text-sm text-slate-500 leading-relaxed">
-                {step.desc}
-              </p>
-            </div>
-          </div>
-        </motion.div>
-      ))}
-      <p className="text-slate-400 italic text-sm text-right pr-2 mt-2">
-        ✦ Ready to be delivered!
-      </p>
-    </div>
         </div>
       </section>
 
       {/* ── NEW: WHAT WE SOLVE ── */}
-      
-          
+
       {/* ── NEW: WHAT WE SOLVE ── */}
       <section className="py-40 border-b border-slate-100">
         <div className="container px-6 mx-auto">
@@ -1016,7 +937,7 @@ export default function HomePage() {
                         <div
                           className={`mt-2 overflow-hidden whitespace-nowrap w-0 ${
                             solveInView
-                              ? "animate-[typing2_1.2s_steps(36,end)_1.4s_forwards]"
+                              ? "animate-[typing2_1.2s_steps(38,end)_1.8s_forwards]"
                               : ""
                           }`}
                         >
@@ -1066,7 +987,6 @@ export default function HomePage() {
                           />
                         </div>
                       </div>
-                      
                     </div>
 
                     {/* text area */}
@@ -1101,76 +1021,30 @@ export default function HomePage() {
       {/* ══════════════════════════════════════════════════════════════════════
           METHODOLOGY: INDUSTRIAL PRECISION (PRESERVED)
       ══════════════════════════════════════════════════════════════════════ */}
-      <section className="py-40 bg-slate-900 text-white overflow-hidden relative">
+      <section
+        ref={sectionRef}
+        className="py-40 bg-slate-900 text-white overflow-hidden relative"
+      >
+        {/* Replace the static text with the typed state */}
         <div className="absolute inset-0 opacity-10 pointer-events-none font-mono text-[120px] font-bold overflow-hidden whitespace-nowrap leading-none select-none">
-          SYSTEM_ARCHITECTURE_V3_DEBUG_MODE_STABLE
+          {displayedText}
         </div>
 
-        <div className="container px-6 mx-auto relative z-10">
+        <div className="container mx-auto relative z-10 flex flex-col items-center text-center">
           <div className="max-w-4xl mb-24">
-            <div className="flex items-center gap-3 mb-10">
-              <div className="w-8 h-[1px] bg-blue-500" />
-              <span className="text-xs font-mono font-bold tracking-[0.4em] text-blue-500 uppercase">
-                Operational Protocol
-              </span>
-            </div>
-            <h2 className="text-6xl md:text-8xl font-medium tracking-tighter leading-[0.85] mb-12">
-              Most ship code. <br />
+            <h2 className="mt-10 text-6xl md:text-8xl font-medium tracking-tighter leading-[0.85] mb-12">
+              We dont just build
+              <br />
               <span className="text-blue-500 italic font-light">
-                We ship assets.
+                We build assets.
               </span>
             </h2>
-            <p className="text-2xl text-slate-400 leading-relaxed max-w-2xl">
-              Software is either a force multiplier or a liability. Our
-              methodology ensures your system remains the former.
+            <p className="text-2xl text-slate-400 leading-relaxed max-w-1xl mx-auto">
+              Most software works at the start but struggles as demands
+              increase. We build with structure and foresight, so your system
+              stays reliable as your business grows. Every part is designed with
+              long-term use in mind.
             </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-slate-800 border border-slate-800">
-            {[
-              {
-                step: "01",
-                title: "Analyze",
-                icon: Terminal,
-                desc: "Deep technical audit and system constraint discovery.",
-              },
-              {
-                step: "02",
-                title: "Architect",
-                icon: Database,
-                desc: "Designing for 100x scale with modular integrity.",
-              },
-              {
-                step: "03",
-                title: "Engineer",
-                icon: Code2,
-                desc: "High-precision development with rigorous testing.",
-              },
-              {
-                step: "04",
-                title: "Scale",
-                icon: Cpu,
-                desc: "Automated deployment and performance optimization.",
-              },
-            ].map((m, i) => (
-              <div
-                key={i}
-                className="bg-slate-900 p-12 hover:bg-slate-800 transition-all group"
-              >
-                <m.icon
-                  size={28}
-                  className="text-slate-600 group-hover:text-blue-500 transition-colors mb-16"
-                />
-                <span className="text-[10px] font-mono text-slate-500 block mb-4 tracking-widest">
-                  {m.step}
-                  {/* DISCOVERY */}
-                </span>
-                <h4 className="text-2xl font-medium mb-4">{m.title}</h4>
-                <p className="text-slate-400 text-sm leading-relaxed">
-                  {m.desc}
-                </p>
-              </div>
-            ))}
           </div>
         </div>
       </section>
