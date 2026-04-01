@@ -303,9 +303,8 @@ export default function ProjectsPage() {
             </motion.div>
           </div>
         </section>
+        <Footer />
       </main>
-
-     <Footer />
     </div>
   );
 }

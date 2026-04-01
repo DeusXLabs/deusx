@@ -93,9 +93,11 @@ const ValueCard = ({ tier, index }: { tier: typeof tiers[0]; index: number }) =>
 export default function EngagementSection() {
   const [isSubmitted, setIsSubmitted] = useState(false);
 
+ 
   return (
-    <section className="relative py-32 lg:py-48 bg-white overflow-hidden">
-        <Navbar />
+    <>
+    <section className="relative py-32 lg:py-48 bg-white overflow-hidden"> 
+      <Navbar />
       {/* Ambient Background Elements */}
       <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
         <div className="absolute top-[-10%] right-[-5%] w-[600px] h-[600px] bg-blue-50 rounded-full blur-[120px] opacity-50" />
@@ -193,8 +195,8 @@ export default function EngagementSection() {
                   whileTap={{ scale: 0.98 }}
                   className="w-full bg-slate-900 text-white py-6 flex items-center justify-center gap-4 text-sm font-bold uppercase tracking-[0.3em] group overflow-hidden relative"
                 >
-                  <div className="absolute inset-0 w-full h-full bg-blue-600 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
-                  <span className="relative z-10">Initialize Consultation</span>
+                  <div className="absolute inset-0 h-full bg-blue-600 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
+                  <span className="relative z-10">Start Consultation</span>
                   <Send className="relative z-10 w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                 </motion.button>
               </form>
@@ -205,17 +207,16 @@ export default function EngagementSection() {
                   <ShieldCheck size={16} className="text-blue-600" />
                   <span className="text-[10px] font-mono text-slate-400">Secure Channel Encrypted</span>
                 </div>
-                <div className="flex gap-2">
-                  <div className="w-1.5 h-1.5 rounded-full bg-blue-600" />
-                  <div className="w-1.5 h-1.5 rounded-full bg-slate-200" />
-                  <div className="w-1.5 h-1.5 rounded-full bg-slate-200" />
-                </div>
+                
               </div>
             </motion.div>
           </div>
         </div>
       </div>
-      <Footer />
+      
     </section>
+    <Footer/>
+    </>
   );
+  
 }
