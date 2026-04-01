@@ -1121,7 +1121,7 @@ export default function HomePage() {
 
             <div className="flex flex-col md:flex-row items-center justify-center gap-6">
               <Link href="/contact">
-                <button className="w-full md:w-auto bg-blue-600 text-white px-12 py-6 text-lg font-bold hover:bg-slate-900 transition-all active:scale-95 shadow-2xl shadow-blue-200 flex items-center justify-center gap-4">
+                <button className="w-full md:w-1xl bg-blue-600 text-white px-12 py-6 text-lg font-bold hover:bg-slate-900 transition-all active:scale-95 shadow-2xl shadow-blue-200 flex items-center justify-center gap-4">
                   Initialize Consultation
                   <ArrowUpRight size={20} />
                 </button>
